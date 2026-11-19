@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2026-11-19 第16課 ○○の1日</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='14' width='56' height='36' rx='5' fill='white' stroke='%23B5D4F4' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%23BC002D'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#F4F9FE">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F9FE; --grid:#DCEBFA; --line:#B5D4F4; --soft:#E6F1FB;
+  --mid:#378ADD; --main:#185FA5; --ink:#0C447C; --green-bg:#E1F5EE; --green:#085041;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:"Noto Sans JP","Noto Sans TC","Hiragino Sans","Hiragino Kaku Gothic ProN","Microsoft JhengHei",system-ui,sans-serif;
+  color:var(--ink); background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px; background-attachment:fixed;
+  font-size:18px; line-height:1.6; min-height:100vh;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:560px;margin:0 auto;padding:12px 14px calc(28px + env(safe-area-inset-bottom))}
+h1{font-size:24px;font-weight:700;text-align:center;margin:4px 0 12px}
+header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+header select{flex:1;min-width:0;font:inherit;font-size:17px;font-weight:500;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;appearance:none;-webkit-appearance:none}
+.ver{font-size:13px;color:var(--mid);white-space:nowrap}
+nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:12px}
+nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
+.pill{font:inherit;font-size:16px;padding:6px 14px;border-radius:999px;border:1px solid #85B7EB;background:#fff;color:var(--main);cursor:pointer;white-space:nowrap}
+.pill.on{background:var(--main);color:#fff;border-color:var(--main)}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.title{text-align:center;font-size:21px;font-weight:500}
+.who{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;align-items:stretch;margin-bottom:12px}
+.hint.big{margin-top:0;display:flex;align-items:center;font-size:clamp(16px,4.6vw,20px)}
+.who .title{display:flex;align-items:center;justify-content:center}
+.ccard{cursor:default}
+.ccard img{width:100%;flex:1;min-height:0;object-fit:contain}
+.cname{font-size:clamp(14px,4vw,17px);font-weight:500;margin-top:4px}
+.modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:12px}
+.modes .pill{font-size:15px;padding:7px 4px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr));width:67%;margin:0 auto}
+.card{position:relative;aspect-ratio:3/4;perspective:800px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.inner{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
+.card.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border:1px solid var(--line);border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.back{background:var(--soft);transform:rotateY(180deg)}
+.emo{font-size:clamp(34px,11vw,52px);line-height:1.15;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.word{font-size:clamp(15px,4.4vw,19px);font-weight:500;line-height:1.3;margin-top:6px;min-height:2.6em;display:flex;flex-direction:column;justify-content:center}
+.te{font-size:clamp(17px,5vw,22px);font-weight:700;line-height:1.35}
+.grp{font-size:clamp(15px,4.2vw,18px);color:var(--mid);margin-top:8px}
+.tags{position:absolute;top:6px;left:6px;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.tags span{font-size:clamp(13px,3.8vw,15px);font-weight:500;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--main)}
+.face.hastag{padding-top:30px}
+.hint{margin-top:12px;font-size:clamp(17px,4.8vw,20px);line-height:1.8}
+.nw{white-space:nowrap}
+.bl{display:inline-block;width:2.4em;height:1.1em;border-bottom:2px solid var(--mid);vertical-align:baseline;margin:0 3px}
+.btns{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;font:inherit;font-size:17px;padding:12px;border-radius:10px;border:1px solid #85B7EB;background:#fff;color:var(--main);cursor:pointer}
+.btn.main{background:var(--main);color:#fff;border-color:var(--main)}
+.ans{margin-top:12px;font-size:clamp(17px,4.8vw,20px);line-height:1.8;display:none}
+.ans.show{display:block}
+.note{font-size:14px;color:var(--mid);text-align:center;margin-top:10px}
+/* slides */
+.slides{overflow:hidden;touch-action:pan-y}
+.track{display:flex;transition:transform .35s}
+.slide{flex:0 0 100%;padding:0 1px}
+.slide .box{min-height:330px}
+.st{font-size:20px;font-weight:700;margin-bottom:6px}
+.sub{font-size:16px;color:var(--mid);margin-bottom:12px;line-height:1.6}
+.ex{font-size:19px;line-height:1.8;padding:10px 12px;background:var(--bg);border-radius:10px;margin-top:8px}
+.ex small{display:block;font-size:15px;color:var(--mid)}
+.ng{color:#A32D2D;font-weight:700;margin-right:4px}
+.ok{color:#0F6E56;font-weight:700;margin-right:4px}
+.two-col{display:grid;grid-template-columns:1fr;gap:10px}
+.mini{border:1px solid var(--line);border-radius:12px;padding:10px}
+.mini .st{font-size:17px}
+.mini .sub{font-size:14px;margin-bottom:6px}
+.mini .ex{font-size:16px}
+.sumt{width:100%;border-collapse:collapse;font-size:16px}
+.sumt th,.sumt td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.sumt th{background:var(--soft);font-weight:500}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--main)}
+.snav{display:flex;gap:8px;margin-top:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
+.blk{display:flex;flex-direction:column;align-items:center;gap:3px}
+.b{border-radius:9px;padding:6px 10px;font-size:19px;line-height:1.4}
+.lab{font-size:14px;color:var(--mid)}
+.tm{background:var(--soft);color:var(--ink)}
+.pl{background:var(--green-bg);color:var(--green)}
+.ac{background:var(--main);color:#fff}
+.arrow{text-align:center;font-size:24px;color:var(--mid);margin:6px 0}
+@media (max-width:340px){nav .pill{font-size:12px}.modes .pill{font-size:13px}.wrap{padding-left:10px;padding-right:10px}.grid{gap:6px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <select id="lessonSel" aria-label="課程"></select>
+    <span class="ver">v1.3</span>
+  </header>
+  <h1 id="lessonTitle"></h1>
+  <nav id="secNav"></nav>
+  <main id="view"></main>
+</div>
+
+<script>
+/* ===== 資料 ===== */
+// 角色圖片放在 chars 資料夾，檔名要跟 img 一樣；沒有圖片時只顯示名字
+const CHARS=[
+ {n:"まる子",img:"chars/maruko.png"},
+ {n:"ドラえもん",img:"chars/doraemon.png"},
+ {n:"のび太",img:"chars/nobita.png"},
+ {n:"しずかちゃん",img:"chars/shizuka.png"},
+ {n:"コナン",img:"chars/conan.png"},
+ {n:"しんのすけ",img:"chars/shinnosuke.png"},
+ {n:"ルフィ",img:"chars/luffy.png"},
+ {n:"ナルト",img:"chars/naruto.png"},
+];
+
+// o=受詞部分, v=ます形, t=て形, g=類, e=emoji, p=可用地點（空陣列＝不顯示地點）
+const VERBS=[
+ {o:"",v:"起きます",t:"起きて",g:"Ⅱ類",e:"🛏️⏰",p:["うち","部屋","ホテル"]},
+ {o:"",v:"寝ます",t:"寝て",g:"Ⅱ類",e:"🛌💤",p:["うち","部屋","ホテル"]},
+ {o:"",v:"働きます",t:"働いて",g:"Ⅰ類",e:"💼",p:["会社","銀行","病院","デパート"]},
+ {o:"",v:"休みます",t:"休んで",g:"Ⅰ類",e:"🛋️",p:["うち","公園","喫茶店"]},
+ {o:"",v:"勉強します",t:"勉強して",g:"Ⅲ類",e:"📚",p:["図書館","学校","教室"]},
+ {o:"会社へ",v:"行きます",t:"行って",g:"Ⅰ類・例外",e:"🏢",p:[]},
+ {o:"うちへ",v:"帰ります",t:"帰って",g:"Ⅰ類",e:"🏠",p:[]},
+ {o:"朝ごはんを",v:"食べます",t:"食べて",g:"Ⅱ類",e:"🍳",p:["うち","食堂","喫茶店","ホテル"]},
+ {o:"コーヒーを",v:"飲みます",t:"飲んで",g:"Ⅰ類",e:"☕",p:["喫茶店","会社","うち"]},
+ {o:"音楽を",v:"聞きます",t:"聞いて",g:"Ⅰ類",e:"🎧",p:["部屋","うち","公園"]},
+ {o:"本を",v:"読みます",t:"読んで",g:"Ⅰ類",e:"📖",p:["図書館","喫茶店","公園"]},
+ {o:"手紙を",v:"書きます",t:"書いて",g:"Ⅰ類",e:"✉️✍️",p:["部屋","うち"]},
+ {o:"写真を",v:"撮ります",t:"撮って",g:"Ⅰ類",e:"📷",p:["公園","お寺","神社"]},
+ {o:"友達に",v:"会います",t:"会って",g:"Ⅰ類",e:"👭",p:["駅","喫茶店","レストラン"]},
+ {o:"宿題を",v:"します",t:"して",g:"Ⅲ類",e:"📝",p:["図書館","部屋","教室"]},
+ {o:"テニスを",v:"します",t:"して",g:"Ⅲ類",e:"🎾",p:["公園","学校"]},
+ {o:"電話を",v:"かけます",t:"かけて",g:"Ⅱ類",e:"📞",p:["会社","うち"]},
+ {o:"",v:"泳ぎます",t:"泳いで",g:"Ⅰ類",e:"🏊",p:["プール","川"]},
+ {o:"",v:"散歩します",t:"散歩して",g:"Ⅲ類",e:"🚶",p:["公園","庭"]},
+ {o:"",v:"買い物します",t:"買い物して",g:"Ⅲ類",e:"🛍️",p:["デパート","スーパー","コンビニ"]},
+ {o:"釣りを",v:"します",t:"して",g:"Ⅲ類",e:"🎣",p:["川"]},
+ {o:"電車に",v:"乗ります",t:"乗って",g:"Ⅰ類",e:"🚃",p:["駅"]},
+ {o:"シャワーを",v:"浴びます",t:"浴びて",g:"Ⅱ類",e:"🚿",p:["うち","ホテル","プール"]},
+ {o:"お金を",v:"下ろします",t:"下ろして",g:"Ⅰ類",e:"🏧",p:["銀行","コンビニ","郵便局"]},
+ {o:"ジョギングを",v:"します",t:"して",g:"Ⅲ類",e:"🏃",p:["公園"]},
+ {o:"テレビを",v:"見ます",t:"見て",g:"Ⅱ類",e:"📺",p:["うち","部屋","寮"]},
+];
+
+/* ===== 課程（之後在這裡往上加） ===== */
+const LESSONS=[
+ {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",sections:[
+   {key:"grammar",name:"文法說明",type:"slides",slides:"grammar"},
+   {key:"easy",name:"初級",type:"practice",level:1},
+   {key:"mid",name:"中級",type:"practice",level:2},
+   {key:"bridge",name:"銜接說明",type:"slides",slides:"bridge"},
+   {key:"hard",name:"高級",type:"practice",level:3},
+ ]},
+];
+
+/* ===== 投影片內容 ===== */
+const SLIDES={
+grammar:[
+`<div class="box"><div class="st">兩個句型</div>
+<div class="two-col">
+ <div class="mini"><div class="st">〜て、〜て、〜ます</div><div class="sub">按照順序列出動作<br>可以連 2 個以上</div><div class="ex">起きて、シャワーを浴びて、会社へ行きます。</div></div>
+ <div class="mini"><div class="st">〜てから、〜ます</div><div class="sub">強調先做完 A 才做 B<br>只連 2 個動作</div><div class="ex">シャワーを浴びてから、寝ます。</div></div>
+</div></div>`,
+`<div class="box"><div class="st">例句對照</div><div class="sub">同樣兩個動作，感覺不一樣</div>
+<div class="ex">宿題をして、テレビを見ます。<small>寫功課，然後看電視（單純說順序）</small></div>
+<div class="ex">宿題をしてから、テレビを見ます。<small>先把功課寫完，才看電視（強調「做完之後」）</small></div></div>`,
+`<div class="box"><div class="st">常見錯誤</div>
+<div class="ex"><span class="ng">✕</span>起きてから、シャワーを浴びてから、会社へ行きます。<small>〜てから不要一直連下去</small></div>
+<div class="ex"><span class="ok">○</span>起きて、シャワーを浴びて、会社へ行きます。<small>很多個動作 → 用〜て、〜て</small></div>
+<div class="ex"><span class="ng">✕</span>昨日、起きて、朝ごはんを食べます。<div style="height:4px"></div><span class="ok">○</span>昨日、起きて、朝ごはんを食べました。<small>過去還是現在，看最後一個動詞</small></div></div>`,
+`<div class="box"><div class="st">整理</div>
+<table class="sumt">
+<tr><th></th><th>〜て、〜て、〜ます</th><th>〜てから、〜ます</th></tr>
+<tr><th>意思</th><td>按照順序做</td><td>A 做完之後才做 B</td></tr>
+<tr><th>動作數</th><td>2 個以上</td><td>2 個</td></tr>
+<tr><th>時態</th><td colspan="2">看最後一個動詞</td></tr>
+</table></div>`
+],
+bridge:[
+`<div class="box"><div class="st" style="font-size:17px;color:var(--mid);font-weight:500">之前學過</div>
+<div class="row"><div class="blk"><div class="b tm">7時に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">うちで</div><span class="lab">どこで</span></div><div class="blk"><div class="b ac">朝ごはんを食べます</div><span class="lab">何をします</span></div></div>
+<div class="arrow">↓</div>
+<div class="st" style="font-size:17px;color:var(--mid);font-weight:500">現在：「何をします」變成很多個動作</div>
+<div class="row"><div class="blk"><div class="b tm">7時に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">うちで</div><span class="lab">どこで</span></div></div>
+<div class="row" style="margin-top:8px"><div class="b ac">起きて、</div><div class="b ac">シャワーを浴びて、</div><div class="b ac">朝ごはんを食べます</div></div>
+<div class="lab" style="margin-top:4px">何をして、何をして、何をします</div></div>`,
+`<div class="box"><div class="st" style="font-size:17px;color:var(--mid);font-weight:500">高級：每個動作都有自己的時間、地點</div>
+<div class="row" style="margin-top:6px"><div class="b tm">7時に</div><div class="b pl">うちで</div><div class="b ac">起きて、</div></div>
+<div class="row" style="margin-top:8px"><div class="b tm">8時に</div><div class="b pl">駅で</div><div class="b ac">電車に乗って、</div></div>
+<div class="row" style="margin-top:8px"><div class="b tm">9時に</div><div class="b pl">会社で</div><div class="b ac">働きます。</div></div>
+<div class="lab" style="margin-top:10px">卡片左上角就是「いつ」和「どこで」</div></div>`
+]};
+
+/* ===== 工具 ===== */
+const $=s=>document.querySelector(s);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function sample(arr,n){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
+const phrase=x=>x.o+x.v;
+const tePhrase=x=>x.o+x.t;
+
+/* ===== 導覽 ===== */
+let lesson=LESSONS[0], sec=lesson.sections[0];
+function buildNav(){
+  $("#lessonSel").innerHTML=LESSONS.map(l=>`<option value="${l.id}">${l.label}</option>`).join("");
+  $("#lessonSel").value=lesson.id;
+  $("#lessonTitle").textContent=lesson.title;
+  document.title=lesson.label+" "+lesson.title;
+  $("#secNav").innerHTML=lesson.sections.map(s=>`<button class="pill${s===sec?" on":""}" data-k="${s.key}">${s.name}</button>`).join("");
+  $("#secNav").querySelectorAll("button").forEach(b=>b.onclick=()=>{sec=lesson.sections.find(s=>s.key===b.dataset.k);buildNav();render();window.scrollTo(0,0)});
+}
+$("#lessonSel").onchange=e=>{lesson=LESSONS.find(l=>l.id===e.target.value);sec=lesson.sections[0];buildNav();render()};
+
+/* ===== 投影片 ===== */
+function renderSlides(key){
+  const list=SLIDES[key];let i=0;
+  $("#view").innerHTML=`<div class="slides"><div class="track">${list.map(h=>`<div class="slide">${h}</div>`).join("")}</div></div>
+  <div class="dots">${list.map(()=>"<i></i>").join("")}</div>
+  <div class="snav"><button class="btn" id="prev">上一頁</button><button class="btn main" id="next">下一頁</button></div>`;
+  const track=$(".track"),dots=[...document.querySelectorAll(".dots i")];
+  const go=n=>{i=Math.max(0,Math.min(list.length-1,n));track.style.transform=`translateX(${-i*100}%)`;dots.forEach((d,k)=>d.classList.toggle("on",k===i))};
+  $("#prev").onclick=()=>go(i-1);$("#next").onclick=()=>go(i+1);
+  let sx=null,sy=null;const el=$(".slides");
+  el.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  el.addEventListener("touchend",e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))go(i+(dx<0?1:-1));sx=null},{passive:true});
+  go(0);
+}
+
+/* ===== 練習 ===== */
+let mode="te";
+function times(n){
+  const pool=[];for(let h=6;h<=22;h++){pool.push({h,m:0});pool.push({h,m:30})}
+  let s;do{s=sample(pool,n).sort((a,b)=>a.h*60+a.m-(b.h*60+b.m))}while(new Set(s.map(x=>x.h)).size<n);
+  return s.map(x=>x.h+"時"+(x.m?"半":""));
+}
+function renderPractice(level){
+  const n=mode==="te"?3:2;
+  const cards=sample(VERBS,n);
+  const ch=pick(CHARS),name=ch.n;
+  const tms=level===3?times(n):[];
+  const pls=cards.map(c=>level===3&&c.p.length?pick(c.p):"");
+  const face=(c,k)=>{
+    const tag=level===3?`<div class="tags"><span>${tms[k]}</span>${pls[k]?`<span>${pls[k]}</span>`:""}</div>`:"";
+    const word=level===1?`<div class="word">${c.o?`<span>${c.o}</span>`:""}<span>${c.v}</span></div>`:"";
+    return `<div class="card"><div class="inner">
+      <div class="face${level===3?" hastag":""}">${tag}<div class="emo">${c.e}</div>${word}</div>
+      <div class="face back"><div class="te">${c.o?c.o+"<br>":""}${c.t}</div><div class="grp">${c.g}</div></div>
+    </div></div>`;
+  };
+  const hint=mode==="te"
+    ?`${name}は<span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>ます。</span>`
+    :`${name}は<span class="nw"><span class="bl"></span>てから、</span><span class="nw"><span class="bl"></span>ます。</span>`;
+  const seg=(c,k,last)=>{
+    const pre=level===3?`${tms[k]}に${pls[k]?pls[k]+"で":""}`:"";
+    if(last)return pre+phrase(c)+"。";
+    return pre+tePhrase(c)+(mode==="kara"?"から":"")+"、";
+  };
+  const answer=name+"は"+cards.map((c,k)=>seg(c,k,k===n-1)).join("");
+  $("#view").innerHTML=`
+   <div class="modes"><button class="pill${mode==="te"?" on":""}" data-m="te">〜て、〜て、〜ます</button><button class="pill${mode==="kara"?" on":""}" data-m="kara">〜てから、〜ます</button></div>
+   <div class="who"><div class="card ccard"><div class="face"><img src="${ch.img}" alt="" onerror="this.remove()"><div class="cname">${name}</div></div></div>${level===1?`<div class="box hint big"><div>${hint}</div></div>`:`<div class="box title">${name}の1日</div>`}</div>
+   <div class="grid${n===2?" two":""}">${cards.map(face).join("")}</div>
+   <div class="box ans" id="ans">${answer}</div>
+   <div class="btns"><button class="btn" id="showAns">看答案</button><button class="btn main" id="again">再抽一次</button></div>
+   <div class="note">點卡片可以翻面</div>`;
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("flip"));
+  document.querySelectorAll(".modes button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;renderPractice(level)});
+  $("#showAns").onclick=()=>{const a=$("#ans");a.classList.toggle("show");$("#showAns").textContent=a.classList.contains("show")?"收起答案":"看答案"};
+  $("#again").onclick=()=>renderPractice(level);
+}
+
+function render(){
+  if(sec.type==="slides")renderSlides(sec.slides);else renderPractice(sec.level);
+}
+buildNav();render();
+</script>
+</body>
+</html>
