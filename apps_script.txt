@@ -1,0 +1,140 @@
+/**
+ * 日語字卡 v2 — Apps Script
+ * 1. 第一次：執行 setup（只要一次，會建好新增用的表單）
+ * 2. 部署成「網頁應用程式」，執行身分：我，存取權：所有人
+ */
+
+const CARD_HEADERS = ['使用', '練習主題', '課', '正面', '背面', '提示', '圖片網址', 'emoji', '地點', '角標'];
+const CHAR_HEADERS = ['使用', '名字', '圖片網址'];
+const CARD_SHEET = '字卡';
+const CHAR_SHEET = '角色';
+const MARKS = ['☀️', '🌙', '不用'];
+
+// 已經建好的「日語字卡資料」試算表
+const SHEET_ID = '1I94jsNh0v9btHzHEv02zOH3mDmW6mN3GaYoNQk1imAc';
+
+/* ========== 初始化（只跑一次） ========== */
+function setup() {
+  const props = PropertiesService.getScriptProperties();
+  if (props.getProperty('FORM_ID')) {
+    Logger.log('已經設定過了。表單：' + FormApp.openById(props.getProperty('FORM_ID')).getPublishedUrl());
+    return;
+  }
+  const ss = openSheet_();
+
+  // 表單
+  const form = FormApp.create('日語字卡・新增');
+  form.setDescription('新增字卡或角色，送出後會自動加進「日語字卡資料」試算表。');
+  const kind = form.addMultipleChoiceItem().setTitle('要新增什麼？').setRequired(true);
+
+  const pCard = form.addPageBreakItem().setTitle('新增字卡');
+  form.addMultipleChoiceItem().setTitle('練習主題')
+    .setHelpText('同一個主題的卡會一起抽；新題目選「其他」自己輸入')
+    .setChoiceValues(['○○の1日']).showOtherOption(true).setRequired(true);
+  form.addTextItem().setTitle('第幾課')
+    .setValidation(FormApp.createTextValidation().requireNumber().build());
+  form.addTextItem().setTitle('卡片正面的字').setRequired(true);
+  form.addTextItem().setTitle('翻面後的答案').setRequired(true);
+  form.addTextItem().setTitle('翻面的小提示').setHelpText('可空白');
+  form.addTextItem().setTitle('圖片網址').setHelpText('在いらすとや的圖上長按 →「拷貝圖片位址」');
+  form.addTextItem().setTitle('emoji').setHelpText('沒有圖片時才顯示，可空白');
+  form.addTextItem().setTitle('高級用的地點').setHelpText('用「、」隔開，可空白');
+  form.addMultipleChoiceItem().setTitle('角標').setHelpText('初級、中級時顯示在卡片右上角')
+    .setChoiceValues(MARKS);
+
+  const pChar = form.addPageBreakItem().setTitle('新增角色');
+  pChar.setGoToPage(FormApp.PageNavigationType.SUBMIT); // 字卡頁填完直接送出
+  form.addTextItem().setTitle('名字').setHelpText('漢字後面用（）寫讀音，例如：まる子（こ）').setRequired(true);
+  form.addTextItem().setTitle('角色圖片網址');
+
+  kind.setChoices([kind.createChoice('字卡', pCard), kind.createChoice('角色', pChar)]);
+
+  ScriptApp.newTrigger('onFormSubmit').forForm(form).onFormSubmit().create();
+
+  props.setProperty('FORM_ID', form.getId());
+  Logger.log('Sheet：' + ss.getUrl());
+  Logger.log('表單（填寫用）：' + form.getPublishedUrl());
+  Logger.log('表單（編輯用）：' + form.getEditUrl());
+}
+
+/* ========== 表單送出 → 寫進 Sheet ========== */
+function onFormSubmit(e) {
+  const v = {};
+  e.response.getItemResponses().forEach(r => { v[r.getItem().getTitle()] = r.getResponse(); });
+  const ss = openSheet_();
+  if (v['要新增什麼？'] === '角色') {
+    appendRow_(ss.getSheetByName(CHAR_SHEET), [true, v['名字'] || '', v['角色圖片網址'] || '']);
+  } else {
+    const mark = v['角標'] && v['角標'] !== '不用' ? v['角標'] : '';
+    appendRow_(ss.getSheetByName(CARD_SHEET), [
+      true, v['練習主題'] || '', Number(v['第幾課']) || '', v['卡片正面的字'] || '', v['翻面後的答案'] || '',
+      v['翻面的小提示'] || '', v['圖片網址'] || '', v['emoji'] || '', v['高級用的地點'] || '', mark
+    ]);
+  }
+}
+
+function appendRow_(sheet, row) {
+  const r = sheet.getLastRow() + 1;
+  sheet.getRange(r, 1, 1, row.length).setValues([row]);
+  sheet.getRange(r, 1).insertCheckboxes().setValue(true);
+}
+
+function openSheet_() {
+  return SpreadsheetApp.openById(SHEET_ID);
+}
+
+/* ========== 網頁讀資料 ========== */
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  try {
+    if (p.img) return json_(proxyImage_(p.img));
+    return json_(readData_(p.deck));
+  } catch (err) {
+    return json_({ error: String(err) });
+  }
+}
+
+function readData_(deck) {
+  const ss = openSheet_();
+  const cards = rows_(ss.getSheetByName(CARD_SHEET))
+    .filter(r => r[0] === true && r[3] && (!deck || r[1] === deck))
+    .map(r => ({
+      deck: r[1], lesson: Number(r[2]) || 0, front: String(r[3]), back: String(r[4]), hint: String(r[5]),
+      img: String(r[6]).trim(), emoji: String(r[7]), extra: String(r[8]), mark: String(r[9])
+    }));
+  const chars = rows_(ss.getSheetByName(CHAR_SHEET))
+    .filter(r => r[0] === true && r[1])
+    .map(r => ({ name: String(r[1]), img: String(r[2]).trim() }));
+  return { ok: true, cards: cards, chars: chars };
+}
+
+function rows_(sheet) {
+  const n = sheet.getLastRow();
+  if (n < 2) return [];
+  return sheet.getRange(2, 1, n - 1, sheet.getLastColumn()).getValues();
+}
+
+/* 圖片代理：只轉 Sheet 裡登記過的網址，避免被當成公開代理 */
+function proxyImage_(url) {
+  const cache = CacheService.getScriptCache();
+  const key = 'img_' + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, url));
+  const hit = cache.get(key);
+  if (hit) return { ok: true, data: hit };
+
+  const ss = openSheet_();
+  const known = rows_(ss.getSheetByName(CARD_SHEET)).map(r => String(r[6]).trim())
+    .concat(rows_(ss.getSheetByName(CHAR_SHEET)).map(r => String(r[2]).trim()));
+  if (known.indexOf(url) < 0) return { ok: false, error: 'unknown image' };
+
+  const res = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+  if (res.getResponseCode() !== 200) return { ok: false, error: 'HTTP ' + res.getResponseCode() };
+  const blob = res.getBlob();
+  const type = blob.getContentType() || (url.endsWith('.svg') ? 'image/svg+xml' : 'image/png');
+  const data = 'data:' + type + ';base64,' + Utilities.base64Encode(blob.getBytes());
+  if (data.length < 95000) cache.put(key, data, 21600);
+  return { ok: true, data: data };
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}

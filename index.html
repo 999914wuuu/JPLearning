@@ -41,7 +41,8 @@ nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
 .who .title{display:flex;align-items:center;justify-content:center}
 .ccard{cursor:default}
 .ccard img{width:100%;flex:1;min-height:0;object-fit:contain}
-.cname{font-size:clamp(14px,4vw,17px);font-weight:500;margin-top:4px}
+rt{font-size:0.55em;font-weight:400}
+.cname{line-height:1.5;font-size:clamp(14px,4vw,17px);font-weight:500;margin-top:4px}
 .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:12px}
 .modes .pill{font-size:15px;padding:7px 4px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -57,7 +58,6 @@ nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
 .grp{font-size:clamp(15px,4.2vw,18px);color:var(--mid);margin-top:8px}
 .tags{position:absolute;top:6px;left:6px;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .tags span{font-size:clamp(13px,3.8vw,15px);font-weight:500;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--main)}
-.face.hastag{padding-top:30px}
 .hint{margin-top:12px;font-size:clamp(17px,4.8vw,20px);line-height:1.8}
 .nw{white-space:nowrap}
 .bl{display:inline-block;width:2.4em;height:1.1em;border-bottom:2px solid var(--mid);vertical-align:baseline;margin:0 3px}
@@ -99,66 +99,32 @@ nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
 .ac{background:var(--main);color:#fff}
 .arrow{text-align:center;font-size:24px;color:var(--mid);margin:6px 0}
 @media (max-width:340px){nav .pill{font-size:12px}.modes .pill{font-size:13px}.wrap{padding-left:10px;padding-right:10px}.grid{gap:6px}}
+.word.long{font-size:clamp(13px,3.7vw,17px)}
+.pic{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}
+.pic img{max-width:100%;max-height:100%;object-fit:contain}
+.face.lv1 .pic{max-height:62%}
+.mark{position:absolute;top:5px;right:5px;width:30px;height:30px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:17px;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;z-index:1}
+.face.hastag{padding-top:44px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <select id="lessonSel" aria-label="課程"></select>
-    <span class="ver">v1.3</span>
+    <span class="ver" id="ver">v2.0</span>
   </header>
   <h1 id="lessonTitle"></h1>
   <nav id="secNav"></nav>
   <main id="view"></main>
 </div>
-
 <script>
-/* ===== 資料 ===== */
-// 角色圖片放在 chars 資料夾，檔名要跟 img 一樣；沒有圖片時只顯示名字
-const CHARS=[
- {n:"まる子",img:"chars/maruko.png"},
- {n:"ドラえもん",img:"chars/doraemon.png"},
- {n:"のび太",img:"chars/nobita.png"},
- {n:"しずかちゃん",img:"chars/shizuka.png"},
- {n:"コナン",img:"chars/conan.png"},
- {n:"しんのすけ",img:"chars/shinnosuke.png"},
- {n:"ルフィ",img:"chars/luffy.png"},
- {n:"ナルト",img:"chars/naruto.png"},
-];
+/* ===== 設定 ===== */
+// 部署 Apps Script 後，把網頁應用程式的網址貼在這裡（以 /exec 結尾）
+const API = "";
 
-// o=受詞部分, v=ます形, t=て形, g=類, e=emoji, p=可用地點（空陣列＝不顯示地點）
-const VERBS=[
- {o:"",v:"起きます",t:"起きて",g:"Ⅱ類",e:"🛏️⏰",p:["うち","部屋","ホテル"]},
- {o:"",v:"寝ます",t:"寝て",g:"Ⅱ類",e:"🛌💤",p:["うち","部屋","ホテル"]},
- {o:"",v:"働きます",t:"働いて",g:"Ⅰ類",e:"💼",p:["会社","銀行","病院","デパート"]},
- {o:"",v:"休みます",t:"休んで",g:"Ⅰ類",e:"🛋️",p:["うち","公園","喫茶店"]},
- {o:"",v:"勉強します",t:"勉強して",g:"Ⅲ類",e:"📚",p:["図書館","学校","教室"]},
- {o:"会社へ",v:"行きます",t:"行って",g:"Ⅰ類・例外",e:"🏢",p:[]},
- {o:"うちへ",v:"帰ります",t:"帰って",g:"Ⅰ類",e:"🏠",p:[]},
- {o:"朝ごはんを",v:"食べます",t:"食べて",g:"Ⅱ類",e:"🍳",p:["うち","食堂","喫茶店","ホテル"]},
- {o:"コーヒーを",v:"飲みます",t:"飲んで",g:"Ⅰ類",e:"☕",p:["喫茶店","会社","うち"]},
- {o:"音楽を",v:"聞きます",t:"聞いて",g:"Ⅰ類",e:"🎧",p:["部屋","うち","公園"]},
- {o:"本を",v:"読みます",t:"読んで",g:"Ⅰ類",e:"📖",p:["図書館","喫茶店","公園"]},
- {o:"手紙を",v:"書きます",t:"書いて",g:"Ⅰ類",e:"✉️✍️",p:["部屋","うち"]},
- {o:"写真を",v:"撮ります",t:"撮って",g:"Ⅰ類",e:"📷",p:["公園","お寺","神社"]},
- {o:"友達に",v:"会います",t:"会って",g:"Ⅰ類",e:"👭",p:["駅","喫茶店","レストラン"]},
- {o:"宿題を",v:"します",t:"して",g:"Ⅲ類",e:"📝",p:["図書館","部屋","教室"]},
- {o:"テニスを",v:"します",t:"して",g:"Ⅲ類",e:"🎾",p:["公園","学校"]},
- {o:"電話を",v:"かけます",t:"かけて",g:"Ⅱ類",e:"📞",p:["会社","うち"]},
- {o:"",v:"泳ぎます",t:"泳いで",g:"Ⅰ類",e:"🏊",p:["プール","川"]},
- {o:"",v:"散歩します",t:"散歩して",g:"Ⅲ類",e:"🚶",p:["公園","庭"]},
- {o:"",v:"買い物します",t:"買い物して",g:"Ⅲ類",e:"🛍️",p:["デパート","スーパー","コンビニ"]},
- {o:"釣りを",v:"します",t:"して",g:"Ⅲ類",e:"🎣",p:["川"]},
- {o:"電車に",v:"乗ります",t:"乗って",g:"Ⅰ類",e:"🚃",p:["駅"]},
- {o:"シャワーを",v:"浴びます",t:"浴びて",g:"Ⅱ類",e:"🚿",p:["うち","ホテル","プール"]},
- {o:"お金を",v:"下ろします",t:"下ろして",g:"Ⅰ類",e:"🏧",p:["銀行","コンビニ","郵便局"]},
- {o:"ジョギングを",v:"します",t:"して",g:"Ⅲ類",e:"🏃",p:["公園"]},
- {o:"テレビを",v:"見ます",t:"見て",g:"Ⅱ類",e:"📺",p:["うち","部屋","寮"]},
-];
-
-/* ===== 課程（之後在這裡往上加） ===== */
+/* ===== 課程（新的一課往上加） ===== */
 const LESSONS=[
- {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",sections:[
+ {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",deck:"○○の1日",sections:[
    {key:"grammar",name:"文法說明",type:"slides",slides:"grammar"},
    {key:"easy",name:"初級",type:"practice",level:1},
    {key:"mid",name:"中級",type:"practice",level:2},
@@ -167,7 +133,12 @@ const LESSONS=[
  ]},
 ];
 
-/* ===== 投影片內容 ===== */
+/* ===== 備援資料（連不到 Apps Script 時使用） ===== */
+const FALLBACK_CARDS=[{"deck": "○○の1日", "lesson": 4, "front": "起きます", "back": "起きて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAKGyTHVMBTFAQ6d5M9CBJ7HEYz3JENwD7thZc6c8hxaJ_nkM4kf-SodcLHqKDvvYSJdzivtune1VbcmprJp_CWZmujfaDYkxV5QZQY0XahqBq9kFrj7O_4Qdu8J6HV-Qw5FR3pfYjg99X/s400/bed_boy_wake.png", "emoji": "🛏️⏰", "extra": "うち、部屋、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "寝ます", "back": "寝て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhBMTf-YNUzHuFYTtyLZFk_rwNdYip_brHLu1WpK50laxkLbSuwHIeUS2TkHMuvWKzIbyQ53ONbjFCoeDuRWSlW7SZVBqzDW3-FiCLMbHqbpZtZ99r3FaZTCVbkxxCn7MllDVSWtr28WQJJ/s400/sleep_bed_young_woman.png", "emoji": "🛌💤", "extra": "うち、部屋、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "働きます", "back": "働いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDHmeNvgwyXy7LQwmXxDbgXGdeHGVfoKk8lXsbPMsq3EV1x3QNFi0FZfVP8ultJIrG3Kf58AJodZ-aiAecdGf9ckcOMjHaB7a_8wzvEnmaxxVLLEmHOUj6VZVytHyXFECY8GksqkDlFBgM/s400/kaisya_man.png", "emoji": "💼", "extra": "会社、銀行、病院、デパート", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "休みます", "back": "休んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiA-YvxRfcNLdb8pY-pEGV_InKsic41qZ9q-ZkSi4sZozhlYNFzPbcY6UdLIanaBr7WDfQk7b7evjMPBKtJHl5KiMHXvlrVoJAwTIAkSyQMoAGbiuDj5qva6bz86dTnEXSqpYLFyFTyYpCA/s400/beads_cushion_woman.png", "emoji": "🛋️", "extra": "うち、公園、喫茶店", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "勉強します", "back": "勉強して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGrR46yFXe4Czs6smGcJhVInuQa6Ktz34kVUoxG89wjh8zikCJBiYdf0b7Vz3pQwseIaSNX3y-LkGMAsrZkSTbpwx3gMC3xBExk8_JHZrwqFjexVH0EjkVMLeaDmzJncRUyZJVw6FEuAE/s400/study_daigakusei_woman.png", "emoji": "📚", "extra": "図書館、学校、教室", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "会社へ行きます", "back": "会社へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi82Pi3TlIl7m6bESlpHVIhj4sNKMZMAm7EHohl1ywKGPhxQEvXd6lSbZu319aYSN7041_x53rtg9khmtP5AEM4s8KbKJ2NiMa_YcoM2jFLV9-q8faBdtrCn9ILj26Vetx7DYE3eMThsw54/s450/walking_businesswoman.png", "emoji": "🏢", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "うちへ帰ります", "back": "うちへ帰って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsP72VJX240KHAsu-XSAJuJXMOJDyRPkag9wCZ-klVFgXsQMK2qaIANTbx0tie-NgRw5q0AuYUQnXOGkNdCxyeI4G7mV383wLV-ssIduQxJMMgy3CUIbX789heCRPfkuyLPetktzYf0tPm/s600/bg_house.jpg", "emoji": "🏠", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "朝ごはんを食べます", "back": "朝ごはんを食べて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgitLz7TVcAjxO8kwus5V5H9v18UWkpTJpJ4crHDXVp18vPOGQGkG_TJrBs-adlXFaEywgcc6t95kHFnp2hNxKKOT6umj0XZIVeQ9a3u9Qm4sUwgXFe4Q1MNUxGAJjBtOAZGjBUs2AcO1-S/s400/food_breakfast.png", "emoji": "🍳", "extra": "うち、食堂、喫茶店、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "コーヒーを飲みます", "back": "コーヒーを飲んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDuJn2i3AUgJ35mVC1eGpRaZE6YK9L4Gl9YW5hc7Rd0cVs2cqAPlYb1v4NgumOwZqAurLtEcpSKXiI5H9PrTh_UZx-SjkOqGoCYSuNPTUwpNSO7U6bO-aIIUkD0sriewQ9GR-boeo6VUA/s400/face_night.png", "emoji": "☕", "extra": "喫茶店、会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "音楽を聞きます", "back": "音楽を聞いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhdZziDjFF-UZfyrblztAJdGBfDcDI0DiQ4p_3XMhy656x4CkWZzC7fe66VCZ9gMG3QGYIK6W5bkpMh2JgHXKZkR_z6BRSJK2S5CfdkTnj0atZd0div1Euiy5wcwU52jItwfdX_3l_jcN2y/s400/music_headphone_man.png", "emoji": "🎧", "extra": "部屋、うち、公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "本を読みます", "back": "本を読んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivAqCn0d0DKBlrSajYyadGDa0nyf4E4YA_HN_SO9CvEkh827z-sISPS9Ha41RosGE2GdfGL5Bb_-NABKnZmK01qnB0sjydGzI-vArulogEqqBw0Y88qSySxBuG590LLzMdtzDKXGdJC9au/s400/book_tsubuse_woman.png", "emoji": "📖", "extra": "図書館、喫茶店、公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "手紙を書きます", "back": "手紙を書いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjafy3ECHzJ26poe025yBdrN0eHDQf9R8F9oQ7iMU51vORbsr-iKk8gId_n4GiK209FM4mgDmN9LhhAu9KymSGJ1UrH_MEWmOyBtUd2j69Jm63GpAxZ1otdTBv2k9w6kBsmnkgV9wsp99E7/s400/tegami_woman.png", "emoji": "✉️✍️", "extra": "部屋、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "写真を撮ります", "back": "写真を撮って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLnyhUwrLwoT_7O3_bSJxUrk9AWSH9oMImKhkJqLci2ftu9fJJ6Wt3fb0Pv8EHzQqgoDQ32C0MVNGQK3x7agD94EKTViwukNlHZNtdTKFC9EE2G0Bj0kIggW_nRZDsYNiJDtBr2eqX0LwD/s450/photo_camera_woman.png", "emoji": "📷", "extra": "公園、お寺、神社、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "友達に会います", "back": "友達に会って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-QqqzMes4G8g6OQ9eEItmxNcDaVyyWJfPmoub1aXI5yIdaPAsDee8biv9Cntfhdy-FvKnwMbNiNmhMohEqv8SFpLurVNUUiOg1UJ3Reg5p_nC3M-LyGBSvF7GO7qNH1hfvkX9xUs0Egg/s400/friends_girl.png", "emoji": "👭", "extra": "駅、喫茶店、レストラン", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "宿題をします", "back": "宿題をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgg1EkLmRTuvI9pOUIpenLUj7uCG31vlQacFKAB9ivZRrGFpfZosWbQEfVCASKwZu9AjEXy8OdhBmvsJJoq7ViBCdCq84XnIy8dve6sRd3PTU6RBeHaKW0bdxDKJepw3m6As8-8nqcjiF8/s400/study_wakaru_boy.png", "emoji": "📝", "extra": "図書館、部屋、教室", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "テニスをします", "back": "テニスをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0omAmkEPQvxI1f2UqHzAtbec4_OOCdKE98PdcrZB-oAzfDRMZR_lEj8VN4hDpxm6Ei-SM1axKavLDwy7pZYpVGqsJ7x7UAeEnOzFsaPfpbPlLUhsYA1H3S1ct9S5qX9GwV3A1kbsTpP-j/s400/sports_tennis_woman.png", "emoji": "🎾", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "電話をかけます", "back": "電話をかけて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSzsYWGMhfpEMKvbPo4ciFaH3KJf0g4vgAZ1n_8Cj8OVAgzE9q0ZeG-nNAvG2w1FMXKKk7ds0RgePIuJV6bNk0cwwR3vFX4eak6E_bNCtjAweCbQKBmy9LrBEhtFQMxHum-hawDalgNQMT/s400/denwa_kotei_woman.png", "emoji": "📞", "extra": "会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "泳ぎます", "back": "泳いで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbBfQxOu8yQXemw-iI_NPkr-X11v6lTpL00zo7EQ1zwkotDphb1OzIhfGqUybs-5avWgFneVwlCDF6r1oNvd5pJxNZra_KsNBryrBr1RzAApnIf8Gx2VQaGTSEwDdtDzGT_6svLq_7Hi6A/s400/umi_boy.png", "emoji": "🏊", "extra": "プール、川", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "散歩します", "back": "散歩して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikkMDYpnR9NKhMn-3N4bnj0RzwWn2P_5AvX6s7dF0o3kSSkOST861u4JIv7VaCOJDCanDPBpH-rzzKdtmIbjl-6fjvNZyQL2yTwzXR76PcqAJMgoOzgAc38gCm-otM_7LjQHJjseP2h05N/s420/walking3_oldman.png", "emoji": "🚶", "extra": "公園、庭", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "買い物します", "back": "買い物して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDN-Dwfd3BYDTELLzdDMFm1WsSpR8_vbGay14qzJ316k1s2aExbI6vcPORHFTNjIIYCbBodJn8sktOznrmxHXSvYuvygBxvxEIdeGEldZu0JG3bOj5HWdsIPjqYXv00UlJs1-KU5DgBIqW/s400/shopping_bag_woman.png", "emoji": "🛍️", "extra": "デパート、スーパー、コンビニ、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "釣りをします", "back": "釣りをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgD5zu5LZtzTWxePPWWSn3OUTVT_fqbeutoAQ3ArPib3JfMSCnCXSwTfY6l-Ithd5w8K8Us4FLxB7cqfFz993PZH19xxQtq_GW8hKoIt9W3FV53uMOO0RUXN5FXMC7KRnMMAzZpDD1oJfQ/s450/fishing_man.png", "emoji": "🎣", "extra": "川", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "電車に乗ります", "back": "電車に乗って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhN57GuJlsNGfXQdJQcVpl1zEgbkDGTWIcz-4DGx4FmLtISrdaqGcOwbo9fZgbsNjSdIbZWvuYKrA6V-xMo3NQPyva2MPq9KFzzRQCqBq0zOftPDHIyMuDCOi6mbx_1-YrV_T1ZlZJkjvPo/s400/train_jousya_man.png", "emoji": "🚃", "extra": "駅", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "シャワーを浴びます", "back": "シャワーを浴びて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGTPDe0CbudFfsBXV0x4qzcsJG34nUnohwGLrFpfsow707DvwgHYsGCt7Zj8Bsk4Ph6e5a5CKxOSbPjnXmBC2SjBNmUDvPs869-YXuHvDJONKZA3CqGBgkIgFI5fzIYZMldCP7KVUPL1U/s400/shower_man.png", "emoji": "🚿", "extra": "うち、ホテル、プール", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "お金を下ろします", "back": "お金を下ろして", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7bvlErdjNb-xkP2I3a1-Vox6-AJ_PQdYiAcxLjk0RxkTwQDV4yzLnpBMZiNO_eRo-Pu2cxFGfJiE4Aa1R1ZfE8VbMsAAuNi5yBLTCkuXHCnZrv5BeJF41B-DWQSEVQj0zqK2KCHOnsuLk/s400/atm_woman.png", "emoji": "🏧", "extra": "銀行、コンビニ、郵便局", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "ジョギングをします", "back": "ジョギングをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvqXFATEFjambncjT027QGoWBUhcC3nLnPFY-f4qQYhNJ_kXUJZQX3FQU9LGlB75o9Ncnk2OQBSV2SapWOWfPMXrfXfM8g-VvvvmGCUYUdPKCILhZJBGhQQ_rY6WY2uP02OWchghYr-vAp/s450/sport_jogging_woman.png", "emoji": "🏃", "extra": "公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "テレビを見ます", "back": "テレビを見て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEio6rL8sInOnfZ2jQ0tmvj_MDq9XDGRvP8adqXeuAvyADpzK41R1QWZ7lbmnn13BVG4C0WFK8Bm8nYKQHcyUS_j-kVC-3aIpZLwN-KThA7fDsnrhmHotCRu7-cXZ-WYaYsayg8DyI1a3yHL/s400/family_tv2.png", "emoji": "📺", "extra": "うち、部屋、寮", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "野球をします", "back": "野球をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEijlcLrFw2xP6cHltL4U9ZO7pkHJwPUk4iI0KWFAwbe9ddZPRqvHEwQHA1Crv79jjyFpRk8n1yEo1wNTEWKOe8AoKQeQfOSWNIFSSf834jfrApjnXgIHrci0SwoxORtn2nxWuf2axD83Ss/s450/job_baseballer.png", "emoji": "⚾", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "サッカーをします", "back": "サッカーをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhOekn9HUH8X4KlSai16pyrE8QDtBS-w3JLViATxr_jbYS4MgOCDVt5RWOS7Y2qcLMkQR9gLdPtZYZEBZn_EgZM3nPy6_81UQyADlfnPM8lqodiV6fXBiT91JhUT5qyDrmlXnXioingimk/s400/olympic25_soccer_blue.png", "emoji": "⚽", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "旅行をします", "back": "旅行をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdjsBCmsB6uWkXefLTZLx5jHv_TqQIAPfO2ETNY88nvsDhth7yKWFPNTzgEYPbSyRApweFQHmTKdyItdpu-Xo1Ht3ihM6LaklbrA763Q0dtLCTot6g67V5GuuxAeg19Dx3hld_QMDkebk/s450/carrycase_man.png", "emoji": "🧳", "extra": "アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "カラオケをします", "back": "カラオケをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ8aizJ342dcx90-G8-9KfqxejTxyrKAY-uyj0cT2DS0ZF1VOevbh9Z9gLLq65suaIwcvu-kRGMq7YvCg-iun_G5kI_K9-m32bpmc7vmlKIBgKu0p6vUVX4sjtsWSo4LrjYGbvpBNfAzos/s400/karaoke_woman.png", "emoji": "🎤", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "お花見をします", "back": "お花見をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCYj3qEf7pQfHYGZq2U2gZGKDeObANr0pQhCoQa8in6wMBptVNb9A1HAlbkN_Bd_xFAXPNVElQtjN5DNOg3ZTJafnm3PYWRIi8zoOsALpvsEWal6dpLhmtFLHw07DDb1PBacjoEV23NQYb/s500/ohanami_group.png", "emoji": "🌸", "extra": "公園、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "食事します", "back": "食事して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGCFJJkAquY5wc91VAQ0BJ6yl3B7mCwCkrH-OBdcFOyRkWs5Cb2g1m8kCF2-4TVbWulENPkxzR_giX8C9S66YILew-zTe-lU4zt3aH5jy-PR6hoGzkEENVbABDjdBcmvjsoI2Rdwg_mDWi/s500/restaurant_rich_couple.png", "emoji": "🍽️", "extra": "レストラン、ホテル、食堂、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "スキーをします", "back": "スキーをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbZNXdV4P5GDrlnpdntNXqOPTMbTVOecYfkiXZ2ClxAULJ9P1GOXmTooYa3_hztFo2p1TKTg51f2FwbH4H91Le99vf51mc2g3_ODDU7owpDQdWV21tliTWz-NUbhN26W8E9IvB4OXZ_ak/s400/ski_woman.png", "emoji": "⛷️", "extra": "スイス、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "料理を作ります", "back": "料理を作って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglnUu1dg-ZFQ8Mk0gS1vsECk5RkhE6yUgnKG8LBFkjxYAZo5ATjcfCSUwUTtis959ZxnNbJHhg5PoHjY1aUFPdzvjnsk20yIw4FvncSkd7rO5kvd7J5F9ChilesJ_qYN1Z7wLQiaSAylaE/s400/cooking_papa.png", "emoji": "👨‍🍳", "extra": "うち", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "朝ごはんを作ります", "back": "朝ごはんを作って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAvuc5Mzjg9XXlCI0ygla8DKDR6kEc4AnX0_xQNxfc4XGQr5rcSUaLCZ-12PRBHwQi3mEkRLV8_i8bWndlXEQSLBcM5vSoxUQozUUlTLH7C9B2zyz5gKqiHJeD95tYSPv4ecZ2nH2yFap-/s400/cooking_frypan_teflon.png", "emoji": "🍳", "extra": "うち", "mark": "☀️"}, {"deck": "○○の1日", "lesson": 6, "front": "晩ごはんを食べます", "back": "晩ごはんを食べて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCJk8unKND1-7Bqg4yX9s78JcDp_vcdVU3ENfbdnTvfadYVooiBj1Wcj3JoC9jCfHJKh9VQJswgu95rZIpFuhWLqj5C4B997q-MIVIuIqvvl7xSCjWtEbDFQzOtl5CyMqtShAjQ66xyBg/s500/family_syokutaku.png", "emoji": "🍚", "extra": "うち、レストラン、食堂", "mark": "🌙"}, {"deck": "○○の1日", "lesson": 6, "front": "ビールを飲みます", "back": "ビールを飲んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh140h6mEg_o8Dq7Ar7Lrt6RUlMa0GfFi5RcCg1mU4Dok7aupU5JvredNvJMQ_wyhhxdjcRqx2L4Oq54-S-ISiaKgFP__xvVA6HZ4UmUKw8rBoyHppvwZJUd2zgD4LX3m-4jH4gvk3DpFw/s400/beer_man.png", "emoji": "🍺", "extra": "レストラン、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "新聞を読みます", "back": "新聞を読んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi27EWmVb2lqB5Bdeaj4KiSMEYpuHV8iJPI7hRkHK1ibftmKDWNb9Lo2DqcwcVvOcjBuRSHC3gqT9lAxfEYTOKYO1g961JhFnn6GB1MT3pdBSz0Ov1dxgSSNaf_9XJ8EBSk82VWFLuCuVnU/s400/shinbun_man.png", "emoji": "📰", "extra": "うち、喫茶店、駅", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "メールを送ります", "back": "メールを送って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5OrTSOVjVXRSr0ekYgky9mtygWZmZSkHUEhtpNtjGu3aS22B4bJ_Q5vu6BS_kVhzVYAWJg_UNVPBvOrlX1Z1Oubecxe0Bct_GYMAIz8V8QI6CAfPWnbMSYquYK7uk51BePeb4C2-iqZY/s400/computer_mail.png", "emoji": "📧", "extra": "会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "レポートを書きます", "back": "レポートを書いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5yYF4m0kfxtzh7VA29wpZcfJq3qSzVQvYqhnwgnQ4wF0BF0tgLioFzG_HudY0VtEuEdi6Z_9Vbq2m5K1qpGspsVeOs8hU4TlxBZEVQjMXASk23yAtsJo-ZmlwZBK0bZY4A5SNqJSlXiHZ/s400/document_report.png", "emoji": "📄", "extra": "図書館、会社、大学", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "お土産を買います", "back": "お土産を買って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeN8hatvGmlLyAW0kjA7_ALgGRf2GoTq6PO2rEDZ_DcBZ9kWnQP89YtO8EEAJzr1egNrrdGBUFd_J1lTJF4bV94BGPEHyBaPlvwOBVRDnnQ9igokic43rJdYXhqtC484XCm8jQNHdgHg3j/s400/shopping_omiyage_woman.png", "emoji": "🎁", "extra": "空港、駅、デパート、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "タクシーに乗ります", "back": "タクシーに乗って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi_4Me1b_KEpFfLmcoYNxmrm3i9HDiQGLVRUhc8iV3bDkoeXmEK69nMesQoihoGf34-HJZOeJuGYXD83OyFKfI_oa_x9-qgHbJdDF5ZOJQoALfj04aHtGn6_Hg1RCdiOFfgmKXdXZQT1OU/s400/taxi_jousya_woman.png", "emoji": "🚕", "extra": "駅、空港、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "電車を乗り換えます", "back": "電車を乗り換えて", "hint": "Ⅱ類", "img": "", "emoji": "🔄🚃", "extra": "駅", "mark": ""}, {"deck": "○○の1日", "lesson": 14, "front": "パソコンを使います", "back": "パソコンを使って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzModXhKPdXj7RbYQzYbx3GW8II7JkN_2mUL3CDmaCE7reOwwJYrY76LyRCP_T2KVaKlJ0ij_P8DlCOeDd1ZGdM_tiQOcMpU8L2P3hbYsq0FIuGjtUtfTxEqQDKQwFXKybH88gLtVjkiGJ/s400/computer_side_man.png", "emoji": "💻", "extra": "会社、図書館、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "映画を見ます", "back": "映画を見て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoYAhDZNoNLTRiJoc08hDXog2kZrnRt-A4YfhTJIjcvoNaNJN-dilN4Nh1DPVZ2JVnIvyi27jSfEuYIp6gPXko2koW6KxGMruII60fcgfIYDkIR0HL5wE8ESSZ9oxtiYGzBAS14RBRcHo/s400/movie_woman.png", "emoji": "🎬", "extra": "うち", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "友達と遊びます", "back": "友達と遊んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjas9-FK9S58x5fCKj3p9Sl3MTKj4ikTHVEX55AuKDmlpUmN7yrLjzk-Xz_DWVZ2-0UVyZm6srddqx9t6xGUaRrqLLA7C8E1RAYcyrmpsHeOt-DpPZNsPhPCtmL13UuWSVI3KfICq9MESdT/s450/game_friends_sueoki_woman.png", "emoji": "🎮", "extra": "公園、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 17, "front": "残業します", "back": "残業して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg286H3pjMRkqB24QiHKGoSW6CcEjetmkwxpbVC3uZfYtyYUQY42QpvYZwendcf5QAwmnUORO-2uko3CIPCVtgRUeL-h2aw8joWtbfYRUyI_o0WD48AizZKF59SwhWpKwvRbSeeS-BTbKE/s400/business_zangyou.png", "emoji": "🌙💼", "extra": "会社", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "資料をコピーします", "back": "資料をコピーして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGqU9uD-KhGjOXOUKMQZXQkjYj43tteibzt_WoD_j6A0G68KOLn3YGjbUvZScpoOtxtN6mfAu61mnpU-GLGNgcDZ6wJNBBf-euR9P_3QwTXADp8oFScocCQFtiZwR9HHwviT8wjEDN1C8/s450/copy_woman.png", "emoji": "🖨️", "extra": "会社、コンビニ", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "学校へ行きます", "back": "学校へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJa70lbnuP2paN7aManaWTWvISVAb1j3C1b2mXz-H_kLlstiE2rhwDQAT4WSqOZPxrYgZirbjUfFXDDaTPlPfsv6ucMk0untZu7zcH7UEGID4LnOvEOzIUOSTAo_-kvHcl49DnmUPfpqo/s400/school.png", "emoji": "🏫", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "駅へ行きます", "back": "駅へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitRfcXKD6s-FEvJrQhfDznKoZHYhjuGYAmm9bQRx-crcu3aQpyuV4hITMEHVsf0vEiWCJLkKqOZaKAO9qz-BD6-YF6qC92kTTOrgTJrITqRPxF31X9FFIb6gBsGzjoRBcUk9TpeS8-t3zH/s450/tatemono_station.png", "emoji": "🚉", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "スーパーへ行きます", "back": "スーパーへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYxZAMq2luTIyIQvFzK8bmSf55uRjzlBNZ1MmhGvANAIUiZjzuxIhwN43gMmrUK5v-0PY6jkfdk_dMlxFJUZSxgkaQnUjBwBTy0jOYjwu9HV31QpSk7nqovcY74mPK3PvJBby3Sx9tp2sy/s450/building_shoping_supermarket.png", "emoji": "🛒", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "銀行へ行きます", "back": "銀行へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAOAlWmcJBZiT4PHKkNUE_E6sAcEShBaMhyZ0ksOhftNY0KSohfh6cTgajHx5iL6RdhjNL9RUFhbAJJpUC2cXYySCjLJc9qOqQ_tiG1MAQJ7OHocMWnt4ETES1mYcMlNHmLnCG5jYINqk/s400/tatemono_bank_money.png", "emoji": "🏦", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "郵便局へ行きます", "back": "郵便局へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghVgI3T1JrVpxuiE7mCMGOEHeImUvEZhRRBAwBhKGlSpkHXZHftDCezXUheFy1N3hSmBFML_3O36u2_kSlal2qTDNh69JYjzXxQYG1LkhgOzPAkkM2_hoc-lFd7qmSsSBixi1h40hqo3g/s400/tatemono_yuubinkyoku.png", "emoji": "🏣", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "図書館へ行きます", "back": "図書館へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrXwpytT2eCALPVcNmYvkgRsJCizTQHU-bJVS8wmsdORlh1hyphenhyphenxrjB3XhwkRc7bHKA8u2sooPLhHYCh-DdZdXZhaxNOCWMEtNQY-nyd3C37mnypgu_03QoU55m6NzC_6NzJs2jXizxnZNA/s400/tatemono_tosyokan.png", "emoji": "📚", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "美術館へ行きます", "back": "美術館へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtnutkDzZUryxaLjdpSVCbMT7NgYa9f9Vryegfp33-JsQyciciBIymckHJGV7RZf0r5JiTjmjHYhxMfi__mRa1vUbwNNMH0np3KybIT7R4mY2QcECquva35bySXudGeZAprrFOikN5UgY/s400/building_art_gallery.png", "emoji": "🖼️", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "デパートへ行きます", "back": "デパートへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzaTx41HBmO0ziX-qETTU_GbBfHRUjqoLwSN2MqEbcMQG6R7xpY8Rm2ImyeXgLJwzE1WXlehLijmGHrW6-1wNW-x32whL6YLRZ6JCMfwrU4dKNvMTeY5LksZJQczIUJsyXHgr7SbmvKRs/s400/tatemono_department_store.png", "emoji": "🏬", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "喫茶店へ行きます", "back": "喫茶店へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnZUIf3iVPoiCjaKpwj39u_wTn6Hb1WFhKcu-UNn12kBRn5Z56KBNhR1PPnbRNxqJxu88l_MZCgiMXspCQrO_51UhE6XQUU07oAmylJxoTJmQeZps78M2OYzLSIs9bs5pHjgfvGAcZsHK_/s400/tatemono_cafe.png", "emoji": "☕", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "公園へ行きます", "back": "公園へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjql1LDUC5DBFFiiOniigDrAIF5xzkvkDYhXl6eqiLNUYVtIKP2FsU_BknuurOkppCBs6RIJR89SXyM_0Q1Xgw5NyWE_yNP6lZWr05FCrgW4I9BFk95XWw3Lxia6RkPazHOYLYVsxlLvYY/s500/tatemono_kouen.png", "emoji": "🌳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "コンビニへ行きます", "back": "コンビニへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgufJHr27yA1UltXu8m_0LerNN6QHFtDvFlz_K18D6Qt3TVe7KyIUJM-2GHMtRKUF-oUXb96sfVRLihNAugIuQIhdrOLeCh9R9D_-9uFOEVIib065LIddKKB9jOzyRFeKW0Jd9oEiy-JgF-/s400/convenience_store_24.png", "emoji": "🏪", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 12, "front": "空港へ行きます", "back": "空港へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcpldGqjPcqVx3ZmRXyKzQMAfnQMjxbyNJ5SGyQ9xZMN5goyrP79zXeMGmY_4ZDjfSmcP7ZY_UgFCnsK4vgLHjHMClznKfv1Ifr5NbpxJ5gNfV4khoZ_xPVCKGr9T52gh02Y7bpEk2HxtH/s400/kuukou.png", "emoji": "✈️", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "病院へ行きます", "back": "病院へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgP6LsfrIzQEuCKHbm68CCkFrGsIE_TMQLJ2Zhcm8rNNSBQflKYXQU5lN70oKimkIuuCDrwm2_OE4xb2UGnctYXh5-pb9cO64RZCmCNRpmggphKnBfuJlyL4IEeuwunf3smQdUp5e3ng5M/s400/tatemono_byouin2.png", "emoji": "🏥", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "アメリカへ行きます", "back": "アメリカへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1fa-1f1f8.svg", "emoji": "🇺🇸", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "イギリスへ行きます", "back": "イギリスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ec-1f1e7.svg", "emoji": "🇬🇧", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "インドへ行きます", "back": "インドへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1f3.svg", "emoji": "🇮🇳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "インドネシアへ行きます", "back": "インドネシアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1e9.svg", "emoji": "🇮🇩", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "韓国へ行きます", "back": "韓国へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f0-1f1f7.svg", "emoji": "🇰🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "タイへ行きます", "back": "タイへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f9-1f1ed.svg", "emoji": "🇹🇭", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "中国へ行きます", "back": "中国へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1f3.svg", "emoji": "🇨🇳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "ドイツへ行きます", "back": "ドイツへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e9-1f1ea.svg", "emoji": "🇩🇪", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "ブラジルへ行きます", "back": "ブラジルへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e7-1f1f7.svg", "emoji": "🇧🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "イタリアへ行きます", "back": "イタリアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1f9.svg", "emoji": "🇮🇹", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "スイスへ行きます", "back": "スイスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1ed.svg", "emoji": "🇨🇭", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "フランスへ行きます", "back": "フランスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1eb-1f1f7.svg", "emoji": "🇫🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "メキシコへ行きます", "back": "メキシコへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f2-1f1fd.svg", "emoji": "🇲🇽", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "スペインへ行きます", "back": "スペインへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ea-1f1f8.svg", "emoji": "🇪🇸", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 11, "front": "オーストラリアへ行きます", "back": "オーストラリアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e6-1f1fa.svg", "emoji": "🇦🇺", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 12, "front": "シンガポールへ行きます", "back": "シンガポールへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f8-1f1ec.svg", "emoji": "🇸🇬", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "日本へ行きます", "back": "日本へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ef-1f1f5.svg", "emoji": "🇯🇵", "extra": "", "mark": ""}];
+const FALLBACK_CHARS=[{"name": "まる子（こ）", "img": ""}, {"name": "ドラえもん", "img": ""}, {"name": "のび太（た）", "img": ""}, {"name": "しずかちゃん", "img": ""}, {"name": "コナン", "img": ""}, {"name": "しんのすけ", "img": ""}, {"name": "ルフィ", "img": ""}, {"name": "ナルト", "img": ""}];
+// Sheet 沒填角色圖片時，改用 GitHub 上 chars 資料夾的圖
+const CHAR_FILES={"まる子":"maruko","ドラえもん":"doraemon","のび太":"nobita","しずかちゃん":"shizuka","コナン":"conan","しんのすけ":"shinnosuke","ルフィ":"luffy","ナルト":"naruto"};
+
 const SLIDES={
 grammar:[
 `<div class="box"><div class="st">兩個句型</div>
@@ -205,24 +176,70 @@ bridge:[
 <div class="lab" style="margin-top:10px">卡片左上角就是「いつ」和「どこで」</div></div>`
 ]};
 
+
+
 /* ===== 工具 ===== */
 const $=s=>document.querySelector(s);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
-function sample(arr,n){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)}
-const phrase=x=>x.o+x.v;
-const tePhrase=x=>x.o+x.t;
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plainName=n=>String(n).replace(/（[^）]*）/g,"");
+const rubyName=n=>esc(n).replace(/([㐀-鿿々]+)（([^）]+)）/g,"<ruby>$1<rt>$2</rt></ruby>");
+const isGo=c=>/へ行きます$/.test(c.front);
+// 「シャワーを浴びます」→ 受詞跟動詞分兩行
+function twoLines(t){const m=String(t).match(/^(.*[をにへとで])(.+)$/);return m?`<span>${esc(m[1])}</span><span>${esc(m[2])}</span>`:`<span>${esc(t)}</span>`}
+function twoLinesBr(t){const m=String(t).match(/^(.*[をにへとで])(.+)$/);return m?`${esc(m[1])}<br>${esc(m[2])}`:esc(t)}
+
+/* ===== 資料載入 ===== */
+let DATA={cards:FALLBACK_CARDS,chars:FALLBACK_CHARS,online:false};
+const imgCache={};
+
+async function loadData(deck){
+  if(!API){setVer();return}
+  try{
+    const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),10000);
+    const r=await fetch(API+"?deck="+encodeURIComponent(deck),{signal:ctl.signal});
+    clearTimeout(t);
+    const j=await r.json();
+    if(j.ok&&j.cards.length){DATA={cards:j.cards,chars:j.chars.length?j.chars:FALLBACK_CHARS,online:true}}
+  }catch(e){console.warn("API 讀取失敗，改用內建資料",e)}
+  setVer();
+}
+function setVer(){$("#ver").textContent="v2.0"+(API&&!DATA.online?"・離線":"")}
+
+// 圖片：先直接載入，失敗再請 Apps Script 代轉，再失敗就顯示 emoji
+function imgTag(url,emoji,cls){
+  if(!url)return emoji?`<div class="emo ${cls||""}">${esc(emoji)}</div>`:"";
+  const src=imgCache[url]||url;
+  return `<img class="${cls||""}" src="${esc(src)}" data-url="${esc(url)}" data-emoji="${esc(emoji||"")}" alt="" referrerpolicy="no-referrer" onerror="imgFail(this)">`;
+}
+async function imgFail(el){
+  const url=el.dataset.url, emoji=el.dataset.emoji;
+  el.onerror=null;
+  if(API&&!el.dataset.tried){
+    el.dataset.tried="1";
+    try{
+      const r=await fetch(API+"?img="+encodeURIComponent(url));const j=await r.json();
+      if(j.ok){imgCache[url]=j.data;el.onerror=()=>swapEmoji(el,emoji);el.src=j.data;return}
+    }catch(e){}
+  }
+  swapEmoji(el,emoji);
+}
+function swapEmoji(el,emoji){
+  if(emoji){const d=document.createElement("div");d.className="emo "+el.className;d.textContent=emoji;el.replaceWith(d)}else el.remove();
+}
 
 /* ===== 導覽 ===== */
 let lesson=LESSONS[0], sec=lesson.sections[0];
 function buildNav(){
-  $("#lessonSel").innerHTML=LESSONS.map(l=>`<option value="${l.id}">${l.label}</option>`).join("");
+  $("#lessonSel").innerHTML=LESSONS.map(l=>`<option value="${l.id}">${esc(l.label)}</option>`).join("");
   $("#lessonSel").value=lesson.id;
   $("#lessonTitle").textContent=lesson.title;
   document.title=lesson.label+" "+lesson.title;
   $("#secNav").innerHTML=lesson.sections.map(s=>`<button class="pill${s===sec?" on":""}" data-k="${s.key}">${s.name}</button>`).join("");
   $("#secNav").querySelectorAll("button").forEach(b=>b.onclick=()=>{sec=lesson.sections.find(s=>s.key===b.dataset.k);buildNav();render();window.scrollTo(0,0)});
 }
-$("#lessonSel").onchange=e=>{lesson=LESSONS.find(l=>l.id===e.target.value);sec=lesson.sections[0];buildNav();render()};
+$("#lessonSel").onchange=async e=>{lesson=LESSONS.find(l=>l.id===e.target.value);sec=lesson.sections[0];buildNav();await loadData(lesson.deck);render()};
 
 /* ===== 投影片 ===== */
 function renderSlides(key){
@@ -241,42 +258,64 @@ function renderSlides(key){
 
 /* ===== 練習 ===== */
 let mode="te";
+function deckCards(){
+  return DATA.cards.filter(c=>c.deck===lesson.deck&&(!lesson.maxLesson||!c.lesson||c.lesson<=lesson.maxLesson));
+}
+// 抽卡：「〇〇へ行きます」一次最多一張
+function draw(n){
+  const out=[];let go=false;
+  for(const c of shuffle(deckCards())){
+    if(isGo(c)){if(go)continue;go=true}
+    out.push(c);if(out.length===n)break;
+  }
+  return out;
+}
 function times(n){
   const pool=[];for(let h=6;h<=22;h++){pool.push({h,m:0});pool.push({h,m:30})}
-  let s;do{s=sample(pool,n).sort((a,b)=>a.h*60+a.m-(b.h*60+b.m))}while(new Set(s.map(x=>x.h)).size<n);
+  let s;do{s=shuffle(pool).slice(0,n).sort((a,b)=>a.h*60+a.m-(b.h*60+b.m))}while(new Set(s.map(x=>x.h)).size<n);
   return s.map(x=>x.h+"時"+(x.m?"半":""));
 }
+const places=c=>String(c.extra||"").split(/[、,，]/).map(x=>x.trim()).filter(Boolean);
+
+function charImg(ch){
+  if(ch.img)return ch.img;
+  const f=CHAR_FILES[plainName(ch.name)];return f?`chars/${f}.png`:"";
+}
+
 function renderPractice(level){
   const n=mode==="te"?3:2;
-  const cards=sample(VERBS,n);
-  const ch=pick(CHARS),name=ch.n;
+  const cards=draw(n);
+  if(cards.length<n){$("#view").innerHTML=`<div class="box">卡片不夠，請在 Sheet 裡多加幾張。</div>`;return}
+  const ch=pick(DATA.chars), name=plainName(ch.name);
   const tms=level===3?times(n):[];
-  const pls=cards.map(c=>level===3&&c.p.length?pick(c.p):"");
+  const pls=cards.map(c=>level===3&&places(c).length?pick(places(c)):"");
   const face=(c,k)=>{
-    const tag=level===3?`<div class="tags"><span>${tms[k]}</span>${pls[k]?`<span>${pls[k]}</span>`:""}</div>`:"";
-    const word=level===1?`<div class="word">${c.o?`<span>${c.o}</span>`:""}<span>${c.v}</span></div>`:"";
+    const tag=level===3?`<div class="tags"><span>${tms[k]}</span>${pls[k]?`<span>${esc(pls[k])}</span>`:""}</div>`:"";
+    const mark=level<3&&c.mark?`<span class="mark">${esc(c.mark)}</span>`:"";
+    const word=level===1?`<div class="word${c.front.length>=10?" long":""}">${twoLines(c.front)}</div>`:"";
     return `<div class="card"><div class="inner">
-      <div class="face${level===3?" hastag":""}">${tag}<div class="emo">${c.e}</div>${word}</div>
-      <div class="face back"><div class="te">${c.o?c.o+"<br>":""}${c.t}</div><div class="grp">${c.g}</div></div>
+      <div class="face lv${level}${level===3?" hastag":""}">${tag}${mark}<div class="pic">${imgTag(c.img,c.emoji)}</div>${word}</div>
+      <div class="face back"><div class="te">${twoLinesBr(c.back)}</div>${c.hint?`<div class="grp">${esc(c.hint)}</div>`:""}</div>
     </div></div>`;
   };
   const hint=mode==="te"
-    ?`${name}は<span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>ます。</span>`
-    :`${name}は<span class="nw"><span class="bl"></span>てから、</span><span class="nw"><span class="bl"></span>ます。</span>`;
+    ?`${esc(name)}は<span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>ます。</span>`
+    :`${esc(name)}は<span class="nw"><span class="bl"></span>てから、</span><span class="nw"><span class="bl"></span>ます。</span>`;
   const seg=(c,k,last)=>{
     const pre=level===3?`${tms[k]}に${pls[k]?pls[k]+"で":""}`:"";
-    if(last)return pre+phrase(c)+"。";
-    return pre+tePhrase(c)+(mode==="kara"?"から":"")+"、";
+    if(last)return pre+c.front+"。";
+    return pre+c.back+(mode==="kara"?"から":"")+"、";
   };
   const answer=name+"は"+cards.map((c,k)=>seg(c,k,k===n-1)).join("");
+  const ci=charImg(ch);
   $("#view").innerHTML=`
    <div class="modes"><button class="pill${mode==="te"?" on":""}" data-m="te">〜て、〜て、〜ます</button><button class="pill${mode==="kara"?" on":""}" data-m="kara">〜てから、〜ます</button></div>
-   <div class="who"><div class="card ccard"><div class="face"><img src="${ch.img}" alt="" onerror="this.remove()"><div class="cname">${name}</div></div></div>${level===1?`<div class="box hint big"><div>${hint}</div></div>`:`<div class="box title">${name}の1日</div>`}</div>
+   <div class="who"><div class="card ccard"><div class="face">${ci?`<img src="${esc(ci)}" alt="" onerror="this.remove()">`:""}<div class="cname">${rubyName(ch.name)}</div></div></div>${level===1?`<div class="box hint big"><div>${hint}</div></div>`:`<div class="box title">${esc(name)}の1日</div>`}</div>
    <div class="grid${n===2?" two":""}">${cards.map(face).join("")}</div>
-   <div class="box ans" id="ans">${answer}</div>
+   <div class="box ans" id="ans">${esc(answer)}</div>
    <div class="btns"><button class="btn" id="showAns">看答案</button><button class="btn main" id="again">再抽一次</button></div>
    <div class="note">點卡片可以翻面</div>`;
-  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>c.classList.toggle("flip"));
+  document.querySelectorAll(".card:not(.ccard)").forEach(c=>c.onclick=()=>c.classList.toggle("flip"));
   document.querySelectorAll(".modes button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;renderPractice(level)});
   $("#showAns").onclick=()=>{const a=$("#ans");a.classList.toggle("show");$("#showAns").textContent=a.classList.contains("show")?"收起答案":"看答案"};
   $("#again").onclick=()=>renderPractice(level);
@@ -285,7 +324,9 @@ function renderPractice(level){
 function render(){
   if(sec.type==="slides")renderSlides(sec.slides);else renderPractice(sec.level);
 }
-buildNav();render();
+
+(async()=>{buildNav();setVer();render();await loadData(lesson.deck);if(sec.type==="practice")render()})();
+
 </script>
 </body>
 </html>
