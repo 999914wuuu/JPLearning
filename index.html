@@ -111,7 +111,7 @@ rt{font-size:0.55em;font-weight:400}
 <div class="wrap">
   <header>
     <select id="lessonSel" aria-label="課程"></select>
-    <span class="ver" id="ver">v2.0</span>
+    <span class="ver" id="ver">v2.1</span>
   </header>
   <h1 id="lessonTitle"></h1>
   <nav id="secNav"></nav>
@@ -120,7 +120,7 @@ rt{font-size:0.55em;font-weight:400}
 <script>
 /* ===== 設定 ===== */
 // 部署 Apps Script 後，把網頁應用程式的網址貼在這裡（以 /exec 結尾）
-const API = "";
+const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
 /* ===== 課程（新的一課往上加） ===== */
 const LESSONS=[
@@ -205,7 +205,7 @@ async function loadData(deck){
   }catch(e){console.warn("API 讀取失敗，改用內建資料",e)}
   setVer();
 }
-function setVer(){$("#ver").textContent="v2.0"+(API&&!DATA.online?"・離線":"")}
+function setVer(){$("#ver").textContent="v2.1"+(API&&!DATA.online?"・離線":"")}
 
 // 圖片：先直接載入，失敗再請 Apps Script 代轉，再失敗就顯示 emoji
 function imgTag(url,emoji,cls){
