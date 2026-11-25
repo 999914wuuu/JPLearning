@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>2026-11-19 第16課 ○○の1日</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>日語教室</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='14' width='56' height='36' rx='5' fill='white' stroke='%23B5D4F4' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%23BC002D'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#F4F9FE">
@@ -11,30 +12,112 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#F4F9FE; --grid:#DCEBFA; --line:#B5D4F4; --soft:#E6F1FB;
-  --mid:#378ADD; --main:#185FA5; --ink:#0C447C; --green-bg:#E1F5EE; --green:#085041;
+/* ===== 主題 ===== */
+:root,[data-theme=blue]{
+  --bg:#F4F9FE; --pat:linear-gradient(#DCEBFA 1px,transparent 1px),linear-gradient(90deg,#DCEBFA 1px,transparent 1px); --patsize:22px 22px;
+  --card:#FFFFFF; --line:#B5D4F4; --soft:#E6F1FB; --mid:#378ADD; --main:#185FA5; --ink:#0C447C; --sub:#185FA5; --onmain:#FFFFFF;
+  --tm:#E6F1FB; --tmink:#0C447C; --pl:#E1F5EE; --plink:#085041; --dim:rgba(12,40,80,.32);
+}
+[data-theme=cream]{
+  --bg:#FFF7E0; --pat:radial-gradient(#EBD49A 1.3px,transparent 1.6px); --patsize:16px 16px;
+  --card:#FFFFFF; --line:#EBD49A; --soft:#FFF1CC; --mid:#B07D1A; --main:#9A6B12; --ink:#5B4316; --sub:#7A5612; --onmain:#FFFFFF;
+  --tm:#FFF1CC; --tmink:#5B4316; --pl:#F3EAD8; --plink:#6B4A10; --dim:rgba(60,40,0,.28);
+}
+[data-theme=green]{
+  --bg:#F2FAF5; --pat:none; --patsize:auto;
+  --card:#FFFFFF; --line:#BFE3CF; --soft:#E3F4EA; --mid:#3E9A70; --main:#2F7D5B; --ink:#1F5A40; --sub:#2F7D5B; --onmain:#FFFFFF;
+  --tm:#E3F4EA; --tmink:#1F5A40; --pl:#EEF2E4; --plink:#4A5A1F; --dim:rgba(20,50,35,.3);
+}
+[data-theme=light]{
+  --bg:#FAFAFA; --pat:none; --patsize:auto;
+  --card:#FFFFFF; --line:#DDDDDD; --soft:#F0F0F0; --mid:#666666; --main:#333333; --ink:#222222; --sub:#555555; --onmain:#FFFFFF;
+  --tm:#F0F0F0; --tmink:#222222; --pl:#E9EEF0; --plink:#2C3A40; --dim:rgba(0,0,0,.3);
+}
+[data-theme=dark]{
+  --bg:#1E2024; --pat:none; --patsize:auto;
+  --card:#2A2D33; --line:#3A3E46; --soft:#33373F; --mid:#9AA3AE; --main:#9DB8D9; --ink:#EEEEEE; --sub:#B8C2CE; --onmain:#1E2024;
+  --tm:#33373F; --tmink:#DDE6F0; --pl:#2F3A36; --plink:#BFE3CF; --dim:rgba(0,0,0,.5);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{
-  font-family:"Noto Sans JP","Noto Sans TC","Hiragino Sans","Hiragino Kaku Gothic ProN","Microsoft JhengHei",system-ui,sans-serif;
-  color:var(--ink); background:var(--bg);
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:22px 22px; background-attachment:fixed;
-  font-size:18px; line-height:1.6; min-height:100vh;
-  -webkit-tap-highlight-color:transparent;
+  font-family:"Noto Sans TC","Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Microsoft JhengHei",system-ui,sans-serif;
+  color:var(--ink); background:var(--bg); background-image:var(--pat); background-size:var(--patsize); background-attachment:fixed;
+  font-size:18px; line-height:1.6; min-height:100vh; -webkit-tap-highlight-color:transparent;
 }
-.wrap{max-width:560px;margin:0 auto;padding:12px 14px calc(28px + env(safe-area-inset-bottom))}
-h1{font-size:24px;font-weight:700;text-align:center;margin:4px 0 12px}
-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-header select{flex:1;min-width:0;font:inherit;font-size:17px;font-weight:500;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;appearance:none;-webkit-appearance:none}
-.ver{font-size:13px;color:var(--mid);white-space:nowrap}
-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:12px}
-nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
-.pill{font:inherit;font-size:16px;padding:6px 14px;border-radius:999px;border:1px solid #85B7EB;background:#fff;color:var(--main);cursor:pointer;white-space:nowrap}
-.pill.on{background:var(--main);color:#fff;border-color:var(--main)}
-.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+[lang=ja]{font-family:"Noto Sans JP","Noto Sans TC","Hiragino Sans",sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.hide{display:none!important}
+/* 假名：大小 0.5em、行距 0.6 */
+rt{font-size:.5em;font-weight:400;line-height:.6}
+body.nokana .vwrap rt{display:none}
+
+/* ===== 版面 ===== */
+.wrap{max-width:560px;margin:0 auto;padding:0 14px calc(28px + env(safe-area-inset-bottom))}
+.topbar{display:flex;align-items:center;gap:10px;padding:12px 0 8px}
+.iconbtn{width:44px;height:44px;flex:none;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--main);display:flex;align-items:center;justify-content:center}
+.topbar .ttl{flex:1;min-width:0;font-size:19px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ver{font-size:13px;color:var(--sub);white-space:nowrap}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+/* 毛絨奶油黃：白色方塊外圍一圈圓圓的毛邊 */
+[data-theme=cream] .box,[data-theme=cream] .fluff{position:relative;isolation:isolate;border-color:transparent}
+[data-theme=cream] .box::before,[data-theme=cream] .fluff::before{content:"";position:absolute;inset:-7px;border-radius:22px;z-index:-1;
+  background:radial-gradient(circle,#FFFFFF 6.6px,transparent 7.2px) 0 0/14px 14px;filter:drop-shadow(0 3px 5px rgba(170,125,40,.22))}
+[data-theme=cream] .box::after,[data-theme=cream] .fluff::after{content:"";position:absolute;inset:0;border-radius:inherit;background:inherit;z-index:-1}
+
+/* 側邊欄 */
+.dim{position:fixed;inset:0;background:var(--dim);z-index:20}
+.drawer{position:fixed;left:0;top:0;bottom:0;width:min(300px,86vw);background:var(--card);z-index:21;display:flex;flex-direction:column;
+  padding:calc(16px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));box-shadow:4px 0 18px rgba(0,0,0,.15);
+  transform:translateX(-105%);transition:transform .25s;overflow-y:auto}
+.drawer.open{transform:none}
+.me{display:flex;align-items:center;gap:12px;padding:4px 6px 14px;border-bottom:1px solid var(--soft);background:none;border-left:0;border-right:0;border-top:0;text-align:left;width:100%}
+.ava{width:48px;height:48px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.me b{display:block;font-size:17px}
+.me small{display:block;font-size:13px;color:var(--sub)}
+.grp-t{font-size:13px;font-weight:700;color:var(--sub);padding:16px 8px 6px;letter-spacing:.05em}
+.nav-i{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 12px;border-radius:12px;font-size:16px;background:none;border:0;text-align:left;color:var(--ink)}
+.nav-i.on{background:var(--main);color:var(--onmain);font-weight:500}
+.nav-i:disabled{color:var(--mid);cursor:default}
+.soon{margin-left:auto;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--sub);white-space:nowrap}
+.dfoot{margin-top:auto;display:flex;align-items:center;gap:8px;border-top:1px solid var(--soft);padding-top:12px}
+.dfoot .ver{flex:1}
+.textbtn{height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--main);font-size:15px}
+
+/* 主題選單 */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:31;background:var(--card);border-radius:24px 24px 0 0;padding:14px 16px calc(24px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;max-width:560px;margin:0 auto}
+.sheet .handle{width:40px;height:5px;border-radius:3px;background:var(--line);align-self:center}
+.sheet h2{font-size:18px;padding:4px 2px}
+.th{display:flex;align-items:center;gap:12px;height:52px;padding:0 14px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:17px;font-weight:500;text-align:left}
+.th.on{border:2px solid var(--main)}
+.th i{width:30px;height:30px;border-radius:9px;border:1px solid #D9D2C0;display:flex;align-items:center;justify-content:center}
+.th i::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
+.th span{flex:1}
+.sheet small{font-size:13px;color:var(--sub)}
+
+/* 登入、開通、第一次登入 */
+.center{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:32px 24px;text-align:center;max-width:420px;margin:0 auto}
+.center h1{font-size:28px}
+.center p{color:var(--sub);font-size:16px}
+.gbtn{min-height:44px;display:flex;justify-content:center}
+.small{font-size:13px;color:var(--sub)}
+.form{width:100%;display:flex;flex-direction:column;gap:14px;text-align:left}
+.form label{display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:500}
+.form input{height:52px;border-radius:14px;border:1px solid var(--line);padding:0 14px;font-size:17px;background:var(--card)}
+.avs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.avs button{height:64px;border-radius:16px;border:1px solid var(--line);background:var(--card);font-size:32px;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.avs button.on{border:2px solid var(--main);background:var(--soft)}
+.btn{flex:1;font-size:17px;padding:12px;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--main)}
+.btn.main{background:var(--main);color:var(--onmain);border-color:var(--main)}
+.btn:disabled{opacity:.5}
+
+/* ===== 上課（v2.4 內容） ===== */
+h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
+.secnav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-bottom:12px}
+.secnav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
+.pill{font-size:16px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--main);white-space:nowrap}
+.pill.on{background:var(--main);color:var(--onmain);border-color:var(--main)}
 .title{text-align:center;font-size:21px;font-weight:500}
 .who{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;align-items:start;margin-bottom:12px}
 .who .box{align-self:stretch}
@@ -43,7 +126,6 @@ nav .pill{font-size:14px;padding:7px 0;text-align:center;letter-spacing:-0.02em}
 .ccard{cursor:default}
 .cpic{position:absolute;left:6px;right:6px;top:6px;bottom:44px}
 .cpic img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
-rt{font-size:0.55em;font-weight:400}
 .cname{position:absolute;left:4px;right:4px;bottom:4px;height:38px;display:flex;align-items:flex-end;justify-content:center;white-space:nowrap;overflow:hidden;line-height:1.3;font-size:clamp(14px,4vw,17px);font-weight:500}
 .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:12px}
 .modes .pill{font-size:15px;padding:7px 4px}
@@ -52,14 +134,15 @@ rt{font-size:0.55em;font-weight:400}
 .card{position:relative;height:0;padding-top:133.333%;perspective:800px;cursor:pointer;user-select:none;-webkit-user-select:none}
 .inner{position:absolute;inset:0;transition:transform .45s;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
 .card.flip .inner{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;border:1px solid var(--line);border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face{position:absolute;inset:0;border:1px solid var(--line);border-radius:14px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ccard .face{backface-visibility:visible}
 .back{background:var(--soft);transform:rotateY(180deg)}
 .emo{font-size:clamp(34px,11vw,52px);line-height:1.15;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .word{position:absolute;left:4px;right:4px;bottom:6px;height:34%;overflow:hidden;font-size:clamp(15px,4.4vw,19px);font-weight:500;line-height:1.3;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .word span,.te span{display:block;white-space:nowrap}
 .bk{position:absolute;left:4px;right:4px;top:6px;bottom:6px;overflow:hidden;font-size:clamp(16px,4.6vw,20px);display:flex;flex-direction:column;align-items:center;justify-content:center}
 .te{font-size:1em;font-weight:500;line-height:1.35;display:flex;flex-direction:column;align-items:center}
-.grp{font-size:.88em;color:var(--mid);margin-top:8px;white-space:nowrap}
+.grp{font-size:.88em;color:var(--sub);margin-top:8px;white-space:nowrap}
 .grp.only{font-size:1.4em;font-weight:700;color:var(--main);margin-top:0}
 .tags{position:absolute;top:6px;left:6px;right:6px;z-index:1;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .tags span{max-width:100%;overflow:hidden;white-space:nowrap;font-size:clamp(13px,3.8vw,15px);font-weight:500;padding:0 8px;border-radius:999px;background:var(--soft);color:var(--main)}
@@ -67,22 +150,22 @@ rt{font-size:0.55em;font-weight:400}
 .nw{white-space:nowrap}
 .bl{display:inline-block;width:2.4em;height:1.1em;border-bottom:2px solid var(--mid);vertical-align:baseline;margin:0 3px}
 .btns{display:flex;gap:8px;margin-top:12px}
-.btn{flex:1;font:inherit;font-size:17px;padding:12px;border-radius:10px;border:1px solid #85B7EB;background:#fff;color:var(--main);cursor:pointer}
-.btn.main{background:var(--main);color:#fff;border-color:var(--main)}
 .ans{margin-top:12px;font-size:clamp(17px,4.8vw,20px);line-height:1.8;display:none}
 .ans.show{display:block}
-.note{font-size:14px;color:var(--mid);text-align:center;margin-top:10px}
-/* slides */
-.slides{overflow:hidden;touch-action:pan-y}
-.track{display:flex;transition:transform .35s}
-.slide{flex:0 0 100%;padding:0 1px}
+.note{font-size:14px;color:var(--sub);text-align:center;margin-top:10px}
+.slides{overflow:hidden;touch-action:pan-y;padding:8px 8px 0}
+.track{display:flex;transition:transform .35s;gap:16px}
+.slide{flex:0 0 100%}
 .slide .box{min-height:330px}
 .st{font-size:20px;font-weight:700;margin-bottom:6px}
-.sub{font-size:16px;color:var(--mid);margin-bottom:12px;line-height:1.6}
+.sub{font-size:16px;color:var(--sub);margin-bottom:12px;line-height:1.6}
 .ex{font-size:19px;line-height:1.8;padding:10px 12px;background:var(--bg);border-radius:10px;margin-top:8px}
-.ex small{display:block;font-size:15px;color:var(--mid)}
-.ng{color:#A32D2D;font-weight:700;margin-right:4px}
-.ok{color:#0F6E56;font-weight:700;margin-right:4px}
+.ex small{display:block;font-size:15px;color:var(--sub)}
+.pair{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:8px;font-size:17px;line-height:1.7}
+.pair .pr+.pr{border-top:1px dashed var(--line);margin-top:4px;padding-top:4px}
+.pair small{display:block;font-size:14px;color:var(--sub);margin-top:4px}
+.ng{color:#C23B3B;font-weight:700;margin-right:4px}
+.ok{color:#169B76;font-weight:700;margin-right:4px}
 .two-col{display:grid;grid-template-columns:1fr;gap:10px}
 .mini{border:1px solid var(--line);border-radius:12px;padding:10px}
 .mini .st{font-size:17px}
@@ -94,41 +177,129 @@ rt{font-size:0.55em;font-weight:400}
 .dots{display:flex;justify-content:center;gap:8px;margin-top:10px}
 .dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .dots i.on{background:var(--main)}
-.snav{display:flex;gap:8px;margin-top:10px}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}
 .blk{display:flex;flex-direction:column;align-items:center;gap:3px}
 .b{border-radius:9px;padding:6px 10px;font-size:19px;line-height:1.4}
-.lab{font-size:14px;color:var(--mid)}
-.tm{background:var(--soft);color:var(--ink)}
-.pl{background:var(--green-bg);color:var(--green)}
-.ac{background:var(--main);color:#fff}
+.lab{font-size:14px;color:var(--sub)}
+.tm{background:var(--tm);color:var(--tmink)}
+.pl{background:var(--pl);color:var(--plink)}
+.ac{background:var(--main);color:var(--onmain)}
 .arrow{text-align:center;font-size:24px;color:var(--mid);margin:6px 0}
-@media (max-width:340px){nav .pill{font-size:12px}.modes .pill{font-size:13px}.wrap{padding-left:10px;padding-right:10px}.grid{gap:6px}}
 .pic{position:absolute;left:6px;right:6px;top:6px;bottom:6px;display:flex;align-items:center;justify-content:center}
 .pic img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain}
 .face.lv1 .pic{bottom:calc(34% + 8px)}
 .face.hastag .pic{top:54px}
 .mark{position:absolute;top:5px;right:5px;width:30px;height:30px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:17px;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;z-index:1}
+@media (max-width:340px){.secnav .pill{font-size:12px}.modes .pill{font-size:13px}.wrap{padding-left:10px;padding-right:10px}.grid{gap:6px}}
+
+/* ===== 單字卡 ===== */
+.vctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vctl label{display:flex;align-items:center;gap:6px;font-size:16px}
+.vctl select{height:44px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:500;color:var(--ink)}
+.vctl .sp{flex:1}
+.tgl{height:36px;display:flex;align-items:center;gap:8px;padding:0 4px 0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);font-size:15px;font-weight:500;color:var(--ink)}
+.tgl i{width:40px;height:26px;border-radius:999px;background:var(--line);display:flex;align-items:center;padding:3px;transition:background .2s}
+.tgl i::after{content:"";width:20px;height:20px;border-radius:50%;background:#FFFFFF;transition:transform .2s}
+.tgl[aria-pressed=true] i{background:var(--main)}
+.tgl[aria-pressed=true] i::after{transform:translateX(14px)}
+.vprog{font-size:14px;color:var(--sub);margin:10px 2px}
+.vcard{position:relative;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:56px 18px 24px;cursor:pointer;user-select:none;-webkit-user-select:none;text-align:center}
+.vcard.backside{background:var(--soft)}
+.vspk{position:absolute;top:12px;right:12px;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--main);display:flex;align-items:center;justify-content:center}
+.vcard.backside .vspk{background:var(--card)}
+.vpos{position:absolute;top:14px;left:14px;font-size:14px;font-weight:500;padding:4px 12px;border-radius:999px;background:var(--card);color:var(--main);border:1px solid var(--line)}
+.reveal{min-width:220px;max-width:100%;min-height:64px;padding:8px 16px;border-radius:14px;border:2px dashed var(--line);background:var(--card);color:var(--sub);font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.reveal.open{border-style:solid;color:var(--ink);font-size:30px;font-weight:700;line-height:1.6}
+.vhint{font-size:14px;color:var(--sub)}
+.vzh{font-size:36px;font-weight:700;line-height:1.3}
+.vjp{font-size:22px;color:var(--main);line-height:1.6}
+.vex{margin-top:12px;cursor:default}
+.vex .jp{font-size:20px;line-height:1.6;padding-top:.35em}
+.vex .jp.tap{cursor:pointer}
+.vex .zh{font-size:16px;color:var(--sub);border-top:1px dashed var(--line);padding-top:4px;margin-top:4px}
+.vex small{display:block;font-size:13px;color:var(--sub);margin-top:2px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:2px solid var(--main);margin:0 4px;height:1.1em;vertical-align:baseline}
+.tgt{font-weight:700;color:var(--main);border-bottom:2px solid var(--main)}
+.vnav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.vnav .btn{display:flex;align-items:center;justify-content:center;gap:6px}
+.empty{text-align:center;color:var(--sub)}
 </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <select id="lessonSel" aria-label="課程"></select>
-    <span class="ver" id="ver">v2.3</span>
-  </header>
-  <h1 id="lessonTitle"></h1>
-  <nav id="secNav"></nav>
-  <main id="view"></main>
+<body data-theme="blue">
+
+<!-- 登入 -->
+<section id="scrLogin" class="center hide">
+  <svg aria-hidden="true" width="96" height="72" viewBox="0 0 64 48"><rect x="2" y="2" width="60" height="44" rx="7" fill="#FFFFFF" stroke="#B5D4F4" stroke-width="2"/><circle cx="32" cy="24" r="11" fill="#BC002D"/></svg>
+  <h1>日語教室</h1>
+  <p>上課練習和背單字都在這裡</p>
+  <div id="gbtn" class="gbtn"></div>
+  <div class="small">只會用到你的 email 和名字・<a href="privacy.html" style="color:inherit">隱私權說明</a></div>
+  <div class="small" id="loginMsg"></div>
+  <div class="ver" id="verLogin"></div>
+</section>
+
+<!-- 還沒開通 -->
+<section id="scrNotReg" class="center hide">
+  <h1>還沒開通喔</h1>
+  <p>請找老師幫你開通<br><span id="nrEmail"></span></p>
+  <button class="btn" id="nrSwitch" style="flex:none;width:100%">換一個帳號</button>
+</section>
+
+<!-- 第一次登入：名字和頭像 -->
+<section id="scrProfile" class="center hide">
+  <h1 id="pfTitle">第一次登入</h1>
+  <p>設定一下名字和頭像，之後點側邊欄的頭像也可以改</p>
+  <div class="form">
+    <label>顯示名稱<input id="pfName" maxlength="20" placeholder="大家看到的名字" autocomplete="nickname"></label>
+    <div style="font-size:15px;font-weight:500">頭像</div>
+    <div class="avs" id="pfAvs"></div>
+    <button class="btn main" id="pfSave">開始</button>
+    <div class="small" id="pfMsg"></div>
+  </div>
+</section>
+
+<!-- 主畫面 -->
+<div id="scrMain" class="hide">
+  <div class="wrap">
+    <div class="topbar">
+      <button class="iconbtn" id="menuBtn" aria-label="打開選單"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="ttl" id="topTitle"></div>
+      <span class="ver" id="ver"></span>
+    </div>
+    <main id="main"></main>
+  </div>
 </div>
+
+<!-- 側邊欄 -->
+<div class="dim hide" id="dim"></div>
+<nav class="drawer" id="drawer" aria-label="主選單">
+  <button class="me" id="meBtn" aria-label="修改名字和頭像"><span class="ava" id="meAva"></span><span><b id="meName"></b><small id="meCls"></small></span></button>
+  <div id="navList"></div>
+  <div class="dfoot">
+    <button class="iconbtn" id="themeBtn" aria-label="主題"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <span class="ver" id="verDrawer"></span>
+    <button class="textbtn" id="logoutBtn">登出</button>
+  </div>
+</nav>
+
+<!-- 主題 -->
+<div class="dim hide" id="sheetDim" style="z-index:30"></div>
+<div class="sheet hide" id="sheet" role="dialog" aria-label="主題">
+  <div class="handle"></div>
+  <h2>主題</h2>
+  <div id="thList" style="display:flex;flex-direction:column;gap:8px"></div>
+  <small>只會記在這台裝置</small>
+</div>
+
 <script>
 /* ===== 設定 ===== */
-// 部署 Apps Script 後，把網頁應用程式的網址貼在這裡（以 /exec 結尾）
+const VERSION = "v3.0.1";
+// Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
-/* ===== 課程（新的一課往上加） ===== */
+/* ===== 課程（新的一課往上加；classes 寫哪些班級看得到，老師全部都看得到） ===== */
 const LESSONS=[
- {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",deck:"○○の1日",sections:[
+ {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",deck:"○○の1日",classes:["會計社團"],sections:[
    {key:"grammar",name:"文法說明",type:"slides",slides:"grammar"},
    {key:"easy",name:"初級",type:"practice",level:1},
    {key:"mid",name:"中級",type:"practice",level:2},
@@ -137,122 +308,244 @@ const LESSONS=[
  ]},
 ];
 
-/* ===== 備援資料（連不到 Apps Script 時使用） ===== */
-const FALLBACK_CARDS=[{"deck": "○○の1日", "lesson": 4, "front": "起きます", "back": "起きて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAKGyTHVMBTFAQ6d5M9CBJ7HEYz3JENwD7thZc6c8hxaJ_nkM4kf-SodcLHqKDvvYSJdzivtune1VbcmprJp_CWZmujfaDYkxV5QZQY0XahqBq9kFrj7O_4Qdu8J6HV-Qw5FR3pfYjg99X/s400/bed_boy_wake.png", "emoji": "🛏️⏰", "extra": "うち、部屋、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "寝ます", "back": "寝て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhBMTf-YNUzHuFYTtyLZFk_rwNdYip_brHLu1WpK50laxkLbSuwHIeUS2TkHMuvWKzIbyQ53ONbjFCoeDuRWSlW7SZVBqzDW3-FiCLMbHqbpZtZ99r3FaZTCVbkxxCn7MllDVSWtr28WQJJ/s400/sleep_bed_young_woman.png", "emoji": "🛌💤", "extra": "うち、部屋、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "働きます", "back": "働いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDHmeNvgwyXy7LQwmXxDbgXGdeHGVfoKk8lXsbPMsq3EV1x3QNFi0FZfVP8ultJIrG3Kf58AJodZ-aiAecdGf9ckcOMjHaB7a_8wzvEnmaxxVLLEmHOUj6VZVytHyXFECY8GksqkDlFBgM/s400/kaisya_man.png", "emoji": "💼", "extra": "会社、銀行、病院、デパート", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "休みます", "back": "休んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiA-YvxRfcNLdb8pY-pEGV_InKsic41qZ9q-ZkSi4sZozhlYNFzPbcY6UdLIanaBr7WDfQk7b7evjMPBKtJHl5KiMHXvlrVoJAwTIAkSyQMoAGbiuDj5qva6bz86dTnEXSqpYLFyFTyYpCA/s400/beads_cushion_woman.png", "emoji": "🛋️", "extra": "うち、公園、喫茶店", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "勉強します", "back": "勉強して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGrR46yFXe4Czs6smGcJhVInuQa6Ktz34kVUoxG89wjh8zikCJBiYdf0b7Vz3pQwseIaSNX3y-LkGMAsrZkSTbpwx3gMC3xBExk8_JHZrwqFjexVH0EjkVMLeaDmzJncRUyZJVw6FEuAE/s400/study_daigakusei_woman.png", "emoji": "📚", "extra": "図書館、学校、教室", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "会社へ行きます", "back": "会社へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi82Pi3TlIl7m6bESlpHVIhj4sNKMZMAm7EHohl1ywKGPhxQEvXd6lSbZu319aYSN7041_x53rtg9khmtP5AEM4s8KbKJ2NiMa_YcoM2jFLV9-q8faBdtrCn9ILj26Vetx7DYE3eMThsw54/s450/walking_businesswoman.png", "emoji": "🏢", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "うちへ帰ります", "back": "うちへ帰って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsP72VJX240KHAsu-XSAJuJXMOJDyRPkag9wCZ-klVFgXsQMK2qaIANTbx0tie-NgRw5q0AuYUQnXOGkNdCxyeI4G7mV383wLV-ssIduQxJMMgy3CUIbX789heCRPfkuyLPetktzYf0tPm/s600/bg_house.jpg", "emoji": "🏠", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "朝ごはんを食べます", "back": "朝ごはんを食べて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgitLz7TVcAjxO8kwus5V5H9v18UWkpTJpJ4crHDXVp18vPOGQGkG_TJrBs-adlXFaEywgcc6t95kHFnp2hNxKKOT6umj0XZIVeQ9a3u9Qm4sUwgXFe4Q1MNUxGAJjBtOAZGjBUs2AcO1-S/s400/food_breakfast.png", "emoji": "🍳", "extra": "うち、食堂、喫茶店、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "コーヒーを飲みます", "back": "コーヒーを飲んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDuJn2i3AUgJ35mVC1eGpRaZE6YK9L4Gl9YW5hc7Rd0cVs2cqAPlYb1v4NgumOwZqAurLtEcpSKXiI5H9PrTh_UZx-SjkOqGoCYSuNPTUwpNSO7U6bO-aIIUkD0sriewQ9GR-boeo6VUA/s400/face_night.png", "emoji": "☕", "extra": "喫茶店、会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "音楽を聞きます", "back": "音楽を聞いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhdZziDjFF-UZfyrblztAJdGBfDcDI0DiQ4p_3XMhy656x4CkWZzC7fe66VCZ9gMG3QGYIK6W5bkpMh2JgHXKZkR_z6BRSJK2S5CfdkTnj0atZd0div1Euiy5wcwU52jItwfdX_3l_jcN2y/s400/music_headphone_man.png", "emoji": "🎧", "extra": "部屋、うち、公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "本を読みます", "back": "本を読んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEivAqCn0d0DKBlrSajYyadGDa0nyf4E4YA_HN_SO9CvEkh827z-sISPS9Ha41RosGE2GdfGL5Bb_-NABKnZmK01qnB0sjydGzI-vArulogEqqBw0Y88qSySxBuG590LLzMdtzDKXGdJC9au/s400/book_tsubuse_woman.png", "emoji": "📖", "extra": "図書館、喫茶店、公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "手紙を書きます", "back": "手紙を書いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjafy3ECHzJ26poe025yBdrN0eHDQf9R8F9oQ7iMU51vORbsr-iKk8gId_n4GiK209FM4mgDmN9LhhAu9KymSGJ1UrH_MEWmOyBtUd2j69Jm63GpAxZ1otdTBv2k9w6kBsmnkgV9wsp99E7/s400/tegami_woman.png", "emoji": "✉️✍️", "extra": "部屋、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "写真を撮ります", "back": "写真を撮って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLnyhUwrLwoT_7O3_bSJxUrk9AWSH9oMImKhkJqLci2ftu9fJJ6Wt3fb0Pv8EHzQqgoDQ32C0MVNGQK3x7agD94EKTViwukNlHZNtdTKFC9EE2G0Bj0kIggW_nRZDsYNiJDtBr2eqX0LwD/s450/photo_camera_woman.png", "emoji": "📷", "extra": "公園、お寺、神社、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "友達に会います", "back": "友達に会って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-QqqzMes4G8g6OQ9eEItmxNcDaVyyWJfPmoub1aXI5yIdaPAsDee8biv9Cntfhdy-FvKnwMbNiNmhMohEqv8SFpLurVNUUiOg1UJ3Reg5p_nC3M-LyGBSvF7GO7qNH1hfvkX9xUs0Egg/s400/friends_girl.png", "emoji": "👭", "extra": "駅、喫茶店、レストラン", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "宿題をします", "back": "宿題をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgg1EkLmRTuvI9pOUIpenLUj7uCG31vlQacFKAB9ivZRrGFpfZosWbQEfVCASKwZu9AjEXy8OdhBmvsJJoq7ViBCdCq84XnIy8dve6sRd3PTU6RBeHaKW0bdxDKJepw3m6As8-8nqcjiF8/s400/study_wakaru_boy.png", "emoji": "📝", "extra": "図書館、部屋、教室", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "テニスをします", "back": "テニスをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0omAmkEPQvxI1f2UqHzAtbec4_OOCdKE98PdcrZB-oAzfDRMZR_lEj8VN4hDpxm6Ei-SM1axKavLDwy7pZYpVGqsJ7x7UAeEnOzFsaPfpbPlLUhsYA1H3S1ct9S5qX9GwV3A1kbsTpP-j/s400/sports_tennis_woman.png", "emoji": "🎾", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "電話をかけます", "back": "電話をかけて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjSzsYWGMhfpEMKvbPo4ciFaH3KJf0g4vgAZ1n_8Cj8OVAgzE9q0ZeG-nNAvG2w1FMXKKk7ds0RgePIuJV6bNk0cwwR3vFX4eak6E_bNCtjAweCbQKBmy9LrBEhtFQMxHum-hawDalgNQMT/s400/denwa_kotei_woman.png", "emoji": "📞", "extra": "会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "泳ぎます", "back": "泳いで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbBfQxOu8yQXemw-iI_NPkr-X11v6lTpL00zo7EQ1zwkotDphb1OzIhfGqUybs-5avWgFneVwlCDF6r1oNvd5pJxNZra_KsNBryrBr1RzAApnIf8Gx2VQaGTSEwDdtDzGT_6svLq_7Hi6A/s400/umi_boy.png", "emoji": "🏊", "extra": "プール、川", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "散歩します", "back": "散歩して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEikkMDYpnR9NKhMn-3N4bnj0RzwWn2P_5AvX6s7dF0o3kSSkOST861u4JIv7VaCOJDCanDPBpH-rzzKdtmIbjl-6fjvNZyQL2yTwzXR76PcqAJMgoOzgAc38gCm-otM_7LjQHJjseP2h05N/s420/walking3_oldman.png", "emoji": "🚶", "extra": "公園、庭", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "買い物します", "back": "買い物して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDN-Dwfd3BYDTELLzdDMFm1WsSpR8_vbGay14qzJ316k1s2aExbI6vcPORHFTNjIIYCbBodJn8sktOznrmxHXSvYuvygBxvxEIdeGEldZu0JG3bOj5HWdsIPjqYXv00UlJs1-KU5DgBIqW/s400/shopping_bag_woman.png", "emoji": "🛍️", "extra": "デパート、スーパー、コンビニ、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "釣りをします", "back": "釣りをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgD5zu5LZtzTWxePPWWSn3OUTVT_fqbeutoAQ3ArPib3JfMSCnCXSwTfY6l-Ithd5w8K8Us4FLxB7cqfFz993PZH19xxQtq_GW8hKoIt9W3FV53uMOO0RUXN5FXMC7KRnMMAzZpDD1oJfQ/s450/fishing_man.png", "emoji": "🎣", "extra": "川", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "電車に乗ります", "back": "電車に乗って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhN57GuJlsNGfXQdJQcVpl1zEgbkDGTWIcz-4DGx4FmLtISrdaqGcOwbo9fZgbsNjSdIbZWvuYKrA6V-xMo3NQPyva2MPq9KFzzRQCqBq0zOftPDHIyMuDCOi6mbx_1-YrV_T1ZlZJkjvPo/s400/train_jousya_man.png", "emoji": "🚃", "extra": "駅", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "シャワーを浴びます", "back": "シャワーを浴びて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGTPDe0CbudFfsBXV0x4qzcsJG34nUnohwGLrFpfsow707DvwgHYsGCt7Zj8Bsk4Ph6e5a5CKxOSbPjnXmBC2SjBNmUDvPs869-YXuHvDJONKZA3CqGBgkIgFI5fzIYZMldCP7KVUPL1U/s400/shower_man.png", "emoji": "🚿", "extra": "うち、ホテル、プール", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "お金を下ろします", "back": "お金を下ろして", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi7bvlErdjNb-xkP2I3a1-Vox6-AJ_PQdYiAcxLjk0RxkTwQDV4yzLnpBMZiNO_eRo-Pu2cxFGfJiE4Aa1R1ZfE8VbMsAAuNi5yBLTCkuXHCnZrv5BeJF41B-DWQSEVQj0zqK2KCHOnsuLk/s400/atm_woman.png", "emoji": "🏧", "extra": "銀行、コンビニ、郵便局", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "ジョギングをします", "back": "ジョギングをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgvqXFATEFjambncjT027QGoWBUhcC3nLnPFY-f4qQYhNJ_kXUJZQX3FQU9LGlB75o9Ncnk2OQBSV2SapWOWfPMXrfXfM8g-VvvvmGCUYUdPKCILhZJBGhQQ_rY6WY2uP02OWchghYr-vAp/s450/sport_jogging_woman.png", "emoji": "🏃", "extra": "公園", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "テレビを見ます", "back": "テレビを見て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEio6rL8sInOnfZ2jQ0tmvj_MDq9XDGRvP8adqXeuAvyADpzK41R1QWZ7lbmnn13BVG4C0WFK8Bm8nYKQHcyUS_j-kVC-3aIpZLwN-KThA7fDsnrhmHotCRu7-cXZ-WYaYsayg8DyI1a3yHL/s400/family_tv2.png", "emoji": "📺", "extra": "うち、部屋、寮", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "野球をします", "back": "野球をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEijlcLrFw2xP6cHltL4U9ZO7pkHJwPUk4iI0KWFAwbe9ddZPRqvHEwQHA1Crv79jjyFpRk8n1yEo1wNTEWKOe8AoKQeQfOSWNIFSSf834jfrApjnXgIHrci0SwoxORtn2nxWuf2axD83Ss/s450/job_baseballer.png", "emoji": "⚾", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "サッカーをします", "back": "サッカーをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhOekn9HUH8X4KlSai16pyrE8QDtBS-w3JLViATxr_jbYS4MgOCDVt5RWOS7Y2qcLMkQR9gLdPtZYZEBZn_EgZM3nPy6_81UQyADlfnPM8lqodiV6fXBiT91JhUT5qyDrmlXnXioingimk/s400/olympic25_soccer_blue.png", "emoji": "⚽", "extra": "公園、学校", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "旅行をします", "back": "旅行をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjdjsBCmsB6uWkXefLTZLx5jHv_TqQIAPfO2ETNY88nvsDhth7yKWFPNTzgEYPbSyRApweFQHmTKdyItdpu-Xo1Ht3ihM6LaklbrA763Q0dtLCTot6g67V5GuuxAeg19Dx3hld_QMDkebk/s450/carrycase_man.png", "emoji": "🧳", "extra": "アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 9, "front": "カラオケをします", "back": "カラオケをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZ8aizJ342dcx90-G8-9KfqxejTxyrKAY-uyj0cT2DS0ZF1VOevbh9Z9gLLq65suaIwcvu-kRGMq7YvCg-iun_G5kI_K9-m32bpmc7vmlKIBgKu0p6vUVX4sjtsWSo4LrjYGbvpBNfAzos/s400/karaoke_woman.png", "emoji": "🎤", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "お花見をします", "back": "お花見をして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCYj3qEf7pQfHYGZq2U2gZGKDeObANr0pQhCoQa8in6wMBptVNb9A1HAlbkN_Bd_xFAXPNVElQtjN5DNOg3ZTJafnm3PYWRIi8zoOsALpvsEWal6dpLhmtFLHw07DDb1PBacjoEV23NQYb/s500/ohanami_group.png", "emoji": "🌸", "extra": "公園、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "食事します", "back": "食事して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGCFJJkAquY5wc91VAQ0BJ6yl3B7mCwCkrH-OBdcFOyRkWs5Cb2g1m8kCF2-4TVbWulENPkxzR_giX8C9S66YILew-zTe-lU4zt3aH5jy-PR6hoGzkEENVbABDjdBcmvjsoI2Rdwg_mDWi/s500/restaurant_rich_couple.png", "emoji": "🍽️", "extra": "レストラン、ホテル、食堂、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "スキーをします", "back": "スキーをして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbZNXdV4P5GDrlnpdntNXqOPTMbTVOecYfkiXZ2ClxAULJ9P1GOXmTooYa3_hztFo2p1TKTg51f2FwbH4H91Le99vf51mc2g3_ODDU7owpDQdWV21tliTWz-NUbhN26W8E9IvB4OXZ_ak/s400/ski_woman.png", "emoji": "⛷️", "extra": "スイス、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "料理を作ります", "back": "料理を作って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglnUu1dg-ZFQ8Mk0gS1vsECk5RkhE6yUgnKG8LBFkjxYAZo5ATjcfCSUwUTtis959ZxnNbJHhg5PoHjY1aUFPdzvjnsk20yIw4FvncSkd7rO5kvd7J5F9ChilesJ_qYN1Z7wLQiaSAylaE/s400/cooking_papa.png", "emoji": "👨‍🍳", "extra": "うち", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "朝ごはんを作ります", "back": "朝ごはんを作って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAvuc5Mzjg9XXlCI0ygla8DKDR6kEc4AnX0_xQNxfc4XGQr5rcSUaLCZ-12PRBHwQi3mEkRLV8_i8bWndlXEQSLBcM5vSoxUQozUUlTLH7C9B2zyz5gKqiHJeD95tYSPv4ecZ2nH2yFap-/s400/cooking_frypan_teflon.png", "emoji": "🍳", "extra": "うち", "mark": "☀️"}, {"deck": "○○の1日", "lesson": 6, "front": "晩ごはんを食べます", "back": "晩ごはんを食べて", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjCJk8unKND1-7Bqg4yX9s78JcDp_vcdVU3ENfbdnTvfadYVooiBj1Wcj3JoC9jCfHJKh9VQJswgu95rZIpFuhWLqj5C4B997q-MIVIuIqvvl7xSCjWtEbDFQzOtl5CyMqtShAjQ66xyBg/s500/family_syokutaku.png", "emoji": "🍚", "extra": "うち、レストラン、食堂", "mark": "🌙"}, {"deck": "○○の1日", "lesson": 6, "front": "ビールを飲みます", "back": "ビールを飲んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh140h6mEg_o8Dq7Ar7Lrt6RUlMa0GfFi5RcCg1mU4Dok7aupU5JvredNvJMQ_wyhhxdjcRqx2L4Oq54-S-ISiaKgFP__xvVA6HZ4UmUKw8rBoyHppvwZJUd2zgD4LX3m-4jH4gvk3DpFw/s400/beer_man.png", "emoji": "🍺", "extra": "レストラン、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "新聞を読みます", "back": "新聞を読んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi27EWmVb2lqB5Bdeaj4KiSMEYpuHV8iJPI7hRkHK1ibftmKDWNb9Lo2DqcwcVvOcjBuRSHC3gqT9lAxfEYTOKYO1g961JhFnn6GB1MT3pdBSz0Ov1dxgSSNaf_9XJ8EBSk82VWFLuCuVnU/s400/shinbun_man.png", "emoji": "📰", "extra": "うち、喫茶店、駅", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "メールを送ります", "back": "メールを送って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5OrTSOVjVXRSr0ekYgky9mtygWZmZSkHUEhtpNtjGu3aS22B4bJ_Q5vu6BS_kVhzVYAWJg_UNVPBvOrlX1Z1Oubecxe0Bct_GYMAIz8V8QI6CAfPWnbMSYquYK7uk51BePeb4C2-iqZY/s400/computer_mail.png", "emoji": "📧", "extra": "会社、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "レポートを書きます", "back": "レポートを書いて", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5yYF4m0kfxtzh7VA29wpZcfJq3qSzVQvYqhnwgnQ4wF0BF0tgLioFzG_HudY0VtEuEdi6Z_9Vbq2m5K1qpGspsVeOs8hU4TlxBZEVQjMXASk23yAtsJo-ZmlwZBK0bZY4A5SNqJSlXiHZ/s400/document_report.png", "emoji": "📄", "extra": "図書館、会社、大学", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "お土産を買います", "back": "お土産を買って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeN8hatvGmlLyAW0kjA7_ALgGRf2GoTq6PO2rEDZ_DcBZ9kWnQP89YtO8EEAJzr1egNrrdGBUFd_J1lTJF4bV94BGPEHyBaPlvwOBVRDnnQ9igokic43rJdYXhqtC484XCm8jQNHdgHg3j/s400/shopping_omiyage_woman.png", "emoji": "🎁", "extra": "空港、駅、デパート、アメリカ、イギリス、インド、インドネシア、韓国、タイ、中国、ドイツ、ブラジル、イタリア、スイス、フランス、メキシコ、スペイン、オーストラリア、シンガポール、日本", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "タクシーに乗ります", "back": "タクシーに乗って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi_4Me1b_KEpFfLmcoYNxmrm3i9HDiQGLVRUhc8iV3bDkoeXmEK69nMesQoihoGf34-HJZOeJuGYXD83OyFKfI_oa_x9-qgHbJdDF5ZOJQoALfj04aHtGn6_Hg1RCdiOFfgmKXdXZQT1OU/s400/taxi_jousya_woman.png", "emoji": "🚕", "extra": "駅、空港、ホテル", "mark": ""}, {"deck": "○○の1日", "lesson": 16, "front": "電車を乗り換えます", "back": "電車を乗り換えて", "hint": "Ⅱ類", "img": "", "emoji": "🔄🚃", "extra": "駅", "mark": ""}, {"deck": "○○の1日", "lesson": 14, "front": "パソコンを使います", "back": "パソコンを使って", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzModXhKPdXj7RbYQzYbx3GW8II7JkN_2mUL3CDmaCE7reOwwJYrY76LyRCP_T2KVaKlJ0ij_P8DlCOeDd1ZGdM_tiQOcMpU8L2P3hbYsq0FIuGjtUtfTxEqQDKQwFXKybH88gLtVjkiGJ/s400/computer_side_man.png", "emoji": "💻", "extra": "会社、図書館、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "映画を見ます", "back": "映画を見て", "hint": "Ⅱ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoYAhDZNoNLTRiJoc08hDXog2kZrnRt-A4YfhTJIjcvoNaNJN-dilN4Nh1DPVZ2JVnIvyi27jSfEuYIp6gPXko2koW6KxGMruII60fcgfIYDkIR0HL5wE8ESSZ9oxtiYGzBAS14RBRcHo/s400/movie_woman.png", "emoji": "🎬", "extra": "うち", "mark": ""}, {"deck": "○○の1日", "lesson": 13, "front": "友達と遊びます", "back": "友達と遊んで", "hint": "Ⅰ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjas9-FK9S58x5fCKj3p9Sl3MTKj4ikTHVEX55AuKDmlpUmN7yrLjzk-Xz_DWVZ2-0UVyZm6srddqx9t6xGUaRrqLLA7C8E1RAYcyrmpsHeOt-DpPZNsPhPCtmL13UuWSVI3KfICq9MESdT/s450/game_friends_sueoki_woman.png", "emoji": "🎮", "extra": "公園、うち", "mark": ""}, {"deck": "○○の1日", "lesson": 17, "front": "残業します", "back": "残業して", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg286H3pjMRkqB24QiHKGoSW6CcEjetmkwxpbVC3uZfYtyYUQY42QpvYZwendcf5QAwmnUORO-2uko3CIPCVtgRUeL-h2aw8joWtbfYRUyI_o0WD48AizZKF59SwhWpKwvRbSeeS-BTbKE/s400/business_zangyou.png", "emoji": "🌙💼", "extra": "会社", "mark": ""}, {"deck": "○○の1日", "lesson": 15, "front": "資料をコピーします", "back": "資料をコピーして", "hint": "Ⅲ類", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjGqU9uD-KhGjOXOUKMQZXQkjYj43tteibzt_WoD_j6A0G68KOLn3YGjbUvZScpoOtxtN6mfAu61mnpU-GLGNgcDZ6wJNBBf-euR9P_3QwTXADp8oFScocCQFtiZwR9HHwviT8wjEDN1C8/s450/copy_woman.png", "emoji": "🖨️", "extra": "会社、コンビニ", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "学校へ行きます", "back": "学校へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgJa70lbnuP2paN7aManaWTWvISVAb1j3C1b2mXz-H_kLlstiE2rhwDQAT4WSqOZPxrYgZirbjUfFXDDaTPlPfsv6ucMk0untZu7zcH7UEGID4LnOvEOzIUOSTAo_-kvHcl49DnmUPfpqo/s400/school.png", "emoji": "🏫", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "駅へ行きます", "back": "駅へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEitRfcXKD6s-FEvJrQhfDznKoZHYhjuGYAmm9bQRx-crcu3aQpyuV4hITMEHVsf0vEiWCJLkKqOZaKAO9qz-BD6-YF6qC92kTTOrgTJrITqRPxF31X9FFIb6gBsGzjoRBcUk9TpeS8-t3zH/s450/tatemono_station.png", "emoji": "🚉", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 5, "front": "スーパーへ行きます", "back": "スーパーへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYxZAMq2luTIyIQvFzK8bmSf55uRjzlBNZ1MmhGvANAIUiZjzuxIhwN43gMmrUK5v-0PY6jkfdk_dMlxFJUZSxgkaQnUjBwBTy0jOYjwu9HV31QpSk7nqovcY74mPK3PvJBby3Sx9tp2sy/s450/building_shoping_supermarket.png", "emoji": "🛒", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "銀行へ行きます", "back": "銀行へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgAOAlWmcJBZiT4PHKkNUE_E6sAcEShBaMhyZ0ksOhftNY0KSohfh6cTgajHx5iL6RdhjNL9RUFhbAJJpUC2cXYySCjLJc9qOqQ_tiG1MAQJ7OHocMWnt4ETES1mYcMlNHmLnCG5jYINqk/s400/tatemono_bank_money.png", "emoji": "🏦", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "郵便局へ行きます", "back": "郵便局へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghVgI3T1JrVpxuiE7mCMGOEHeImUvEZhRRBAwBhKGlSpkHXZHftDCezXUheFy1N3hSmBFML_3O36u2_kSlal2qTDNh69JYjzXxQYG1LkhgOzPAkkM2_hoc-lFd7qmSsSBixi1h40hqo3g/s400/tatemono_yuubinkyoku.png", "emoji": "🏣", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "図書館へ行きます", "back": "図書館へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrXwpytT2eCALPVcNmYvkgRsJCizTQHU-bJVS8wmsdORlh1hyphenhyphenxrjB3XhwkRc7bHKA8u2sooPLhHYCh-DdZdXZhaxNOCWMEtNQY-nyd3C37mnypgu_03QoU55m6NzC_6NzJs2jXizxnZNA/s400/tatemono_tosyokan.png", "emoji": "📚", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "美術館へ行きます", "back": "美術館へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtnutkDzZUryxaLjdpSVCbMT7NgYa9f9Vryegfp33-JsQyciciBIymckHJGV7RZf0r5JiTjmjHYhxMfi__mRa1vUbwNNMH0np3KybIT7R4mY2QcECquva35bySXudGeZAprrFOikN5UgY/s400/building_art_gallery.png", "emoji": "🖼️", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 4, "front": "デパートへ行きます", "back": "デパートへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzaTx41HBmO0ziX-qETTU_GbBfHRUjqoLwSN2MqEbcMQG6R7xpY8Rm2ImyeXgLJwzE1WXlehLijmGHrW6-1wNW-x32whL6YLRZ6JCMfwrU4dKNvMTeY5LksZJQczIUJsyXHgr7SbmvKRs/s400/tatemono_department_store.png", "emoji": "🏬", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "喫茶店へ行きます", "back": "喫茶店へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjnZUIf3iVPoiCjaKpwj39u_wTn6Hb1WFhKcu-UNn12kBRn5Z56KBNhR1PPnbRNxqJxu88l_MZCgiMXspCQrO_51UhE6XQUU07oAmylJxoTJmQeZps78M2OYzLSIs9bs5pHjgfvGAcZsHK_/s400/tatemono_cafe.png", "emoji": "☕", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "公園へ行きます", "back": "公園へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjql1LDUC5DBFFiiOniigDrAIF5xzkvkDYhXl6eqiLNUYVtIKP2FsU_BknuurOkppCBs6RIJR89SXyM_0Q1Xgw5NyWE_yNP6lZWr05FCrgW4I9BFk95XWw3Lxia6RkPazHOYLYVsxlLvYY/s500/tatemono_kouen.png", "emoji": "🌳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 10, "front": "コンビニへ行きます", "back": "コンビニへ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgufJHr27yA1UltXu8m_0LerNN6QHFtDvFlz_K18D6Qt3TVe7KyIUJM-2GHMtRKUF-oUXb96sfVRLihNAugIuQIhdrOLeCh9R9D_-9uFOEVIib065LIddKKB9jOzyRFeKW0Jd9oEiy-JgF-/s400/convenience_store_24.png", "emoji": "🏪", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 12, "front": "空港へ行きます", "back": "空港へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcpldGqjPcqVx3ZmRXyKzQMAfnQMjxbyNJ5SGyQ9xZMN5goyrP79zXeMGmY_4ZDjfSmcP7ZY_UgFCnsK4vgLHjHMClznKfv1Ifr5NbpxJ5gNfV4khoZ_xPVCKGr9T52gh02Y7bpEk2HxtH/s400/kuukou.png", "emoji": "✈️", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "病院へ行きます", "back": "病院へ行って", "hint": "Ⅰ類・例外", "img": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgP6LsfrIzQEuCKHbm68CCkFrGsIE_TMQLJ2Zhcm8rNNSBQflKYXQU5lN70oKimkIuuCDrwm2_OE4xb2UGnctYXh5-pb9cO64RZCmCNRpmggphKnBfuJlyL4IEeuwunf3smQdUp5e3ng5M/s400/tatemono_byouin2.png", "emoji": "🏥", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "アメリカへ行きます", "back": "アメリカへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1fa-1f1f8.svg", "emoji": "🇺🇸", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "イギリスへ行きます", "back": "イギリスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ec-1f1e7.svg", "emoji": "🇬🇧", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "インドへ行きます", "back": "インドへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1f3.svg", "emoji": "🇮🇳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "インドネシアへ行きます", "back": "インドネシアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1e9.svg", "emoji": "🇮🇩", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "韓国へ行きます", "back": "韓国へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f0-1f1f7.svg", "emoji": "🇰🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "タイへ行きます", "back": "タイへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f9-1f1ed.svg", "emoji": "🇹🇭", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "中国へ行きます", "back": "中国へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1f3.svg", "emoji": "🇨🇳", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "ドイツへ行きます", "back": "ドイツへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e9-1f1ea.svg", "emoji": "🇩🇪", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "ブラジルへ行きます", "back": "ブラジルへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e7-1f1f7.svg", "emoji": "🇧🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "イタリアへ行きます", "back": "イタリアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ee-1f1f9.svg", "emoji": "🇮🇹", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "スイスへ行きます", "back": "スイスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1ed.svg", "emoji": "🇨🇭", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 3, "front": "フランスへ行きます", "back": "フランスへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1eb-1f1f7.svg", "emoji": "🇫🇷", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 6, "front": "メキシコへ行きます", "back": "メキシコへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f2-1f1fd.svg", "emoji": "🇲🇽", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 7, "front": "スペインへ行きます", "back": "スペインへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ea-1f1f8.svg", "emoji": "🇪🇸", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 11, "front": "オーストラリアへ行きます", "back": "オーストラリアへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e6-1f1fa.svg", "emoji": "🇦🇺", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 12, "front": "シンガポールへ行きます", "back": "シンガポールへ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1f8-1f1ec.svg", "emoji": "🇸🇬", "extra": "", "mark": ""}, {"deck": "○○の1日", "lesson": 1, "front": "日本へ行きます", "back": "日本へ行って", "hint": "Ⅰ類・例外", "img": "https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1ef-1f1f5.svg", "emoji": "🇯🇵", "extra": "", "mark": ""}];
-const FALLBACK_CHARS=[{"name": "ちびまる子（こ）ちゃん", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/19795/LINEStorePC/main.png?v=1"}, {"name": "ドラえもん", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/26647/LINEStorePC/main.png?v=5"}, {"name": "のび太（た）", "img": "https://w7.pngwing.com/pngs/639/482/png-transparent-doraemon-nobita-nobi-nobita-nobi-tamako-kataoka-doraemon-hidetoshi-dekisugi-shizuka-minamoto-doraemon-nobi-tamako-kataoka-doraemon-thumbnail.png"}, {"name": "しずかちゃん", "img": "https://doraeiga.com/2011/chara/img/chara_image3.png"}, {"name": "コナン", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/5682/LINEStorePC/main.png?v=1"}, {"name": "しんのすけ", "img": "https://www.shinchan-app.jp/images/about/img_character01.png"}, {"name": "ルフィ", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/12639153/LINEStorePC/main.png?v=1"}, {"name": "ナルト", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/4679/LINEStorePC/main.png?v=1"}, {"name": "元太（げんた）くん", "img": "https://emoland.jp/emoland-public/Item/Image/item-365.webp"}, {"name": "怪盗（かいとう）キッド", "img": "https://stickershop.line-scdn.net/stickershop/v1/product/1613443/LINEStorePC/main.png?v=1"}, {"name": "蘭（らん）ちゃん", "img": "https://www.conanpedia.com/images/5/5c/%E6%AF%9B%E5%88%A9%E5%85%B0.png"}, {"name": "園子（そのこ）", "img": "https://emoland.jp/emoland-public/Item/Image/item-366.webp"}, {"name": "哀（あい）ちゃん", "img": "https://emoland.jp/emoland-public/Item/Image/item-362.webp"}, {"name": "歩美（あゆみ）ちゃん", "img": "https://watso.net/wp-content/uploads/2021/09/%E3%81%82%E3%82%86%E3%81%BF.webp"}, {"name": "光彦（みつひこ）", "img": "https://www.ytv.co.jp/conan/character/mitsuhiko/images/main_l63ji575j9aq41140i08kp4nej4yqd.png"}, {"name": "たまちゃん", "img": "https://neoapo.com/images/character/8475/c1c3562c3f12c0ae84ca28ff8eaa5756.png"}];
-// Sheet 沒填角色圖片時，改用 GitHub 上 chars 資料夾的圖
-const CHAR_FILES={"まる子":"maruko","ドラえもん":"doraemon","のび太":"nobita","しずかちゃん":"shizuka","コナン":"conan","しんのすけ":"shinnosuke","ルフィ":"luffy","ナルト":"naruto"};
-
 const SLIDES={
 grammar:[
 `<div class="box"><div class="st">兩個句型</div>
 <div class="two-col">
- <div class="mini"><div class="st">〜て、〜て、〜ます</div><div class="sub">按照順序列出動作<br>可以連 2 個以上</div><div class="ex">起きて、シャワーを浴びて、会社へ行きます。</div></div>
- <div class="mini"><div class="st">〜てから、〜ます</div><div class="sub">強調先做完 A 才做 B<br>只連 2 個動作</div><div class="ex">シャワーを浴びてから、寝ます。</div></div>
+ <div class="mini"><div class="st">Aて、Bて、Cます</div><div class="sub">A → B → C 按照順序做<br>可以連 2 個以上</div><div class="ex" lang="ja">起きて、シャワーを浴びて、会社へ行きます。</div></div>
+ <div class="mini"><div class="st">Aてから、Bます</div><div class="sub">A 做完之後，才做 B<br>只連 2 個動作</div><div class="ex" lang="ja">シャワーを浴びてから、寝ます。</div></div>
 </div></div>`,
 `<div class="box"><div class="st">例句對照</div><div class="sub">同樣兩個動作，感覺不一樣</div>
-<div class="ex">宿題をして、テレビを見ます。<small>寫功課，然後看電視（單純說順序）</small></div>
-<div class="ex">宿題をしてから、テレビを見ます。<small>先把功課寫完，才看電視（強調「做完之後」）</small></div></div>`,
-`<div class="box"><div class="st">常見錯誤</div>
-<div class="ex"><span class="ng">✕</span>起きてから、シャワーを浴びてから、会社へ行きます。<small>〜てから不要一直連下去</small></div>
-<div class="ex"><span class="ok">○</span>起きて、シャワーを浴びて、会社へ行きます。<small>很多個動作 → 用〜て、〜て</small></div>
-<div class="ex"><span class="ng">✕</span>昨日、起きて、朝ごはんを食べます。<div style="height:4px"></div><span class="ok">○</span>昨日、起きて、朝ごはんを食べました。<small>過去還是現在，看最後一個動詞</small></div></div>`,
+<div class="ex"><span lang="ja">宿題をして、テレビを見ます。</span><small>寫功課，然後看電視（單純說順序）</small></div>
+<div class="ex"><span lang="ja">宿題をしてから、テレビを見ます。</span><small>先把功課寫完，才看電視（強調「做完之後」）</small></div></div>`,
+`<div class="box"><div class="st">常見錯誤</div><div class="sub">〜てから不要一直連下去</div>
+<div class="pair"><div class="pr" lang="ja"><span class="ng">✕</span>起きてから、シャワーを浴びてから、会社へ行きます。</div><div class="pr" lang="ja"><span class="ok">○</span>起きて、シャワーを浴びて、会社へ行きます。</div><small>連續好幾個「てから」很不自然<br>3 個以上的動作 → 用 Aて、Bて、Cます</small></div></div>`,
+`<div class="box"><div class="st">て形要變過去式嗎？</div><div class="sub">不用。て形永遠長一樣，<br>過去還是現在，只看最後一個動詞</div>
+<div class="ex"><span lang="ja">毎朝、<b>起きて</b>、朝ごはんを<b>食べます</b>。</span><small>每天早上（現在）</small></div>
+<div class="ex"><span lang="ja">昨日、<b>起きて</b>、朝ごはんを<b>食べました</b>。</span><small>昨天（過去）→ 只有最後的「食べました」變了</small></div>
+<div class="pair"><div class="pr" lang="ja"><span class="ng">✕</span>昨日、起きて、朝ごはんを食べます。</div><div class="pr" lang="ja"><span class="ok">○</span>昨日、起きて、朝ごはんを食べました。</div><small>說昨天的事，最後一個動詞要用過去式</small></div></div>`,
 `<div class="box"><div class="st">整理</div>
 <table class="sumt">
-<tr><th></th><th>〜て、〜て、〜ます</th><th>〜てから、〜ます</th></tr>
+<tr><th></th><th>Aて、Bて、Cます</th><th>Aてから、Bます</th></tr>
 <tr><th>意思</th><td>按照順序做</td><td>A 做完之後才做 B</td></tr>
 <tr><th>動作數</th><td>2 個以上</td><td>2 個</td></tr>
-<tr><th>時態</th><td colspan="2">看最後一個動詞</td></tr>
+<tr><th>時態</th><td colspan="2">て形不變，看最後一個動詞</td></tr>
 </table></div>`
 ],
 bridge:[
-`<div class="box"><div class="st" style="font-size:17px;color:var(--mid);font-weight:500">之前學過</div>
-<div class="row"><div class="blk"><div class="b tm">7時に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">うちで</div><span class="lab">どこで</span></div><div class="blk"><div class="b ac">朝ごはんを食べます</div><span class="lab">何をします</span></div></div>
+`<div class="box"><div class="st" style="font-size:17px;color:var(--sub);font-weight:500">之前學過</div>
+<div class="row" lang="ja"><div class="blk"><div class="b tm">日曜日に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">京都で</div><span class="lab">どこで</span></div><div class="blk"><div class="b ac">写真を撮ります</div><span class="lab">何をします</span></div></div>
 <div class="arrow">↓</div>
-<div class="st" style="font-size:17px;color:var(--mid);font-weight:500">現在：「何をします」變成很多個動作</div>
-<div class="row"><div class="blk"><div class="b tm">7時に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">うちで</div><span class="lab">どこで</span></div></div>
-<div class="row" style="margin-top:8px"><div class="b ac">起きて、</div><div class="b ac">シャワーを浴びて、</div><div class="b ac">朝ごはんを食べます</div></div>
-<div class="lab" style="margin-top:4px">何をして、何をして、何をします</div></div>`,
-`<div class="box"><div class="st" style="font-size:17px;color:var(--mid);font-weight:500">高級：每個動作都有自己的時間、地點</div>
-<div class="row" style="margin-top:6px"><div class="b tm">7時に</div><div class="b pl">うちで</div><div class="b ac">起きて、</div></div>
-<div class="row" style="margin-top:8px"><div class="b tm">8時に</div><div class="b pl">駅で</div><div class="b ac">電車に乗って、</div></div>
-<div class="row" style="margin-top:8px"><div class="b tm">9時に</div><div class="b pl">会社で</div><div class="b ac">働きます。</div></div>
-<div class="lab" style="margin-top:10px">卡片左上角就是「いつ」和「どこで」</div></div>`
+<div class="st" style="font-size:17px;color:var(--sub);font-weight:500">現在：「何をします」變成很多個動作</div>
+<div class="row" lang="ja"><div class="blk"><div class="b tm">日曜日に</div><span class="lab">いつ</span></div><div class="blk"><div class="b pl">京都で</div><span class="lab">どこで</span></div></div>
+<div class="row" lang="ja" style="margin-top:8px"><div class="b ac">お寺を見て、</div><div class="b ac">写真を撮って、</div><div class="b ac">お土産を買います</div></div>
+<div class="lab" lang="ja" style="margin-top:4px">何をして、何をして、何をします</div>
+<div class="sub" style="margin:10px 0 0">「日曜日」是一整天，可以包好幾個動作</div></div>`,
+`<div class="box"><div class="st" style="font-size:17px;color:var(--sub);font-weight:500">高級：每個動作都有自己的時間、地點</div>
+<div class="row" lang="ja" style="margin-top:6px"><div class="b tm">7時に</div><div class="b pl">うちで</div><div class="b ac">朝ごはんを食べて、</div></div>
+<div class="row" lang="ja" style="margin-top:8px"><div class="b tm">8時に</div><div class="b pl">駅で</div><div class="b ac">電車に乗って、</div></div>
+<div class="row" lang="ja" style="margin-top:8px"><div class="b tm">9時に</div><div class="b pl">会社で</div><div class="b ac">働きます。</div></div>
+<div class="sub" style="margin:10px 0 0">「7時」是一個時間點，只放在一個動作前面<br>下一個動作換新的時間</div>
+<div class="lab" style="margin-top:6px">卡片左上角就是「いつ」和「どこで」</div></div>`
 ]};
 
-
+const THEMES=[["blue","淺藍格子","#F4F9FE","#185FA5"],["cream","毛絨奶油黃","#FFF7E0","#9A6B12"],["green","極簡清新綠","#F2FAF5","#2F7D5B"],["light","淺色","#FAFAFA","#333333"],["dark","深色","#1E2024","#9DB8D9"]];
+const AVATARS=["🐰","🐱","🐶","🐻","🐼","🦊","🐨","🐧","🐸","🐯","🐹","🐳"];
 
 /* ===== 工具 ===== */
 const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const esc=t=>String(t??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const plainName=n=>String(n).replace(/（[^）]*）/g,"");
 const rubyName=n=>esc(n).replace(/([㐀-鿿々]+)（([^）]+)）/g,"<ruby>$1<rt>$2</rt></ruby>");
 const isGo=c=>/へ行きます$/.test(c.front);
-// 「シャワーを浴びます」→ 受詞跟動詞分兩行
 function twoLines(t){const m=String(t).match(/^(.*[をにへとで])(.+)$/);return m?`<span>${esc(m[1])}</span><span>${esc(m[2])}</span>`:`<span>${esc(t)}</span>`}
-function twoLinesBr(t){const m=String(t).match(/^(.*[をにへとで])(.+)$/);return m?`${esc(m[1])}<br>${esc(m[2])}`:esc(t)}
+const store={get(k,d){try{const v=localStorage.getItem("jp_"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("jp_"+k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem("jp_"+k)}catch(e){}}};
+const ICON_SPK='<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+const ICON_EYE='<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const ICON_SHUF='<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg>';
 
-/* ===== 資料載入 ===== */
-let DATA={cards:FALLBACK_CARDS,chars:FALLBACK_CHARS,online:false};
-const imgCache={};
-
-async function loadData(deck){
-  if(!API){setVer();return}
-  try{
-    const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),10000);
-    const r=await fetch(API+"?deck="+encodeURIComponent(deck),{signal:ctl.signal});
-    clearTimeout(t);
-    const j=await r.json();
-    if(j.ok&&j.cards.length){DATA={cards:j.cards,chars:j.chars.length?j.chars:FALLBACK_CHARS,online:true}}
-  }catch(e){console.warn("API 讀取失敗，改用內建資料",e)}
-  setVer();
+/* ===== 主題 ===== */
+function applyTheme(t){
+  document.body.dataset.theme=t;store.set("theme",t);
+  const th=THEMES.find(x=>x[0]===t);document.querySelector('meta[name=theme-color]').content=th?th[2]:"#F4F9FE";
+  $("#thList").innerHTML=THEMES.map(([k,n,bg,c])=>`<button class="th${k===t?" on":""}" data-k="${k}" aria-pressed="${k===t}"><i style="background:${bg};--c:${c}"></i><span>${n}</span></button>`).join("");
+  $$("#thList .th").forEach(b=>b.onclick=()=>applyTheme(b.dataset.k));
 }
-function setVer(){$("#ver").textContent="v2.3"+(API&&!DATA.online?"・離線":"")}
+function openSheet(o){$("#sheet").classList.toggle("hide",!o);$("#sheetDim").classList.toggle("hide",!o)}
+$("#themeBtn").onclick=()=>{closeDrawer();openSheet(true)};
+$("#sheetDim").onclick=()=>openSheet(false);
 
-// 圖片：先直接載入，失敗再請 Apps Script 代轉，再失敗就顯示 emoji
+/* ===== 畫面切換 ===== */
+function show(id){["scrLogin","scrNotReg","scrProfile","scrMain"].forEach(s=>$("#"+s).classList.toggle("hide",s!==id));window.scrollTo(0,0)}
+function setVer(){const t=VERSION+(ME&&ME.offline?"・離線":"");["#ver","#verDrawer","#verLogin"].forEach(s=>$(s).textContent=t)}
+
+/* ===== 登入 ===== */
+let ME=null;            // {user, cards, chars, vocab, offline}
+let TOKEN=store.get("token",null);
+const jwtExp=t=>{try{return JSON.parse(atob(t.split(".")[1].replace(/-/g,"+").replace(/_/g,"/"))).exp*1000}catch(e){return 0}};
+const tokenOk=()=>TOKEN&&jwtExp(TOKEN)>Date.now()+60000;
+
+async function api(body){
+  const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),15000);
+  try{const r=await fetch(API,{method:"POST",body:JSON.stringify(body),signal:ctl.signal});return await r.json()}
+  finally{clearTimeout(tm)}
+}
+
+async function getClientId(){
+  let id=store.get("clientId","");
+  try{const r=await fetch(API+"?config=1");const j=await r.json();if(j.ok&&j.clientId){id=j.clientId;store.set("clientId",id)}}catch(e){}
+  return id;
+}
+
+function loadGsi(){
+  return new Promise((res,rej)=>{
+    if(window.google&&google.accounts)return res();
+    const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.onload=res;s.onerror=rej;document.head.appendChild(s);
+  });
+}
+
+let gsiReady=false;
+async function initGsi(){
+  const id=await getClientId();
+  if(!/apps\.googleusercontent\.com$/.test(id)){$("#loginMsg").textContent="登入還沒設定好（Apps Script 的 CLIENT_ID）";return false}
+  try{await loadGsi()}catch(e){$("#loginMsg").textContent="連不到 Google 登入，請檢查網路";return false}
+  google.accounts.id.initialize({client_id:id,callback:onCredential,auto_select:true,cancel_on_tap_outside:false});
+  gsiReady=true;return true;
+}
+function renderLogin(){
+  show("scrLogin");setVer();
+  if(!gsiReady)return;
+  const w=Math.min(360,$("#scrLogin").clientWidth-48);
+  google.accounts.id.renderButton($("#gbtn"),{theme:"outline",size:"large",shape:"pill",text:"signin_with",width:w,locale:"zh-TW"});
+  google.accounts.id.prompt();
+}
+function onCredential(resp){
+  TOKEN=resp.credential;store.set("token",TOKEN);
+  loadMe();
+}
+
+async function loadMe(){
+  try{
+    const j=await api({action:"me",token:TOKEN});
+    handleMe(j);
+  }catch(e){
+    const cache=store.get("me",null);
+    if(cache){ME={...cache,offline:true};enterApp()}
+    else{show("scrLogin");$("#loginMsg").textContent="連線失敗，請稍後再試";}
+  }
+}
+function handleMe(j){
+  if(j.ok){ME={user:j.user,cards:j.cards,chars:j.chars,vocab:j.vocab,offline:false};store.set("me",{user:j.user,cards:j.cards,chars:j.chars,vocab:j.vocab});
+    if(!j.user.displayName){openProfile(true);return}
+    enterApp();return}
+  if(j.reason==="not_registered"){store.del("me");show("scrNotReg");$("#nrEmail").textContent=j.email||"";return}
+  // token 過期或無效 → 重新登入
+  TOKEN=null;store.del("token");renderLogin();
+}
+$("#nrSwitch").onclick=()=>{logout()};
+function logout(){
+  TOKEN=null;ME=null;store.del("token");store.del("me");
+  if(window.google&&google.accounts)google.accounts.id.disableAutoSelect();
+  closeDrawer();renderLogin();
+}
+$("#logoutBtn").onclick=logout;
+
+/* ===== 名字和頭像 ===== */
+let pfAva=AVATARS[0];
+function openProfile(first){
+  show("scrProfile");
+  $("#pfTitle").textContent=first?"第一次登入":"修改名字和頭像";
+  $("#pfSave").textContent=first?"開始":"儲存";
+  $("#pfName").value=(ME&&ME.user.displayName)||"";
+  pfAva=(ME&&ME.user.avatar)||AVATARS[0];
+  $("#pfAvs").innerHTML=AVATARS.map(a=>`<button aria-label="選這個頭像" aria-pressed="${a===pfAva}" class="${a===pfAva?"on":""}" data-a="${a}">${a}</button>`).join("");
+  $$("#pfAvs button").forEach(b=>b.onclick=()=>{pfAva=b.dataset.a;$$("#pfAvs button").forEach(x=>{x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b)})});
+  $("#pfMsg").textContent="";
+}
+$("#pfSave").onclick=async()=>{
+  const name=$("#pfName").value.trim();
+  if(!name){$("#pfMsg").textContent="請填顯示名稱";return}
+  if(!tokenOk()){$("#pfMsg").textContent="登入過期了，請重新登入";setTimeout(logout,1200);return}
+  $("#pfSave").disabled=true;$("#pfMsg").textContent="儲存中…";
+  try{const j=await api({action:"profile",token:TOKEN,displayName:name,avatar:pfAva});handleMe(j)}
+  catch(e){$("#pfMsg").textContent="儲存失敗，請再試一次"}
+  finally{$("#pfSave").disabled=false}
+};
+$("#meBtn").onclick=()=>{closeDrawer();openProfile(false)};
+
+/* ===== 側邊欄 ===== */
+let VIEW=null; // {type:'lesson',id} | {type:'vocab'}
+function visibleLessons(){const u=ME.user;return LESSONS.filter(l=>u.teacher||(l.classes||[]).includes(u.cls))}
+function buildDrawer(){
+  const u=ME.user;
+  $("#meAva").textContent=u.avatar||"🐰";$("#meName").textContent=u.displayName||"";$("#meCls").textContent=u.cls||"";
+  const ls=visibleLessons();
+  let h="";
+  if(ls.length){h+=`<div class="grp-t">上課用</div>`+ls.map(l=>`<button class="nav-i${VIEW.type==="lesson"&&VIEW.id===l.id?" on":""}" data-v="lesson" data-id="${l.id}">${esc(l.label)}・${esc(l.title)}</button>`).join("")}
+  h+=`<div class="grp-t">背單字用</div>
+   <button class="nav-i${VIEW.type==="vocab"?" on":""}" data-v="vocab">單字卡</button>
+   <button class="nav-i" disabled>每日挑戰<span class="soon">未來更新</span></button>
+   <button class="nav-i" disabled>單字魔人<span class="soon">未來更新</span></button>`;
+  $("#navList").innerHTML=h;
+  $$("#navList .nav-i[data-v]").forEach(b=>b.onclick=()=>{VIEW=b.dataset.v==="lesson"?{type:"lesson",id:b.dataset.id}:{type:"vocab"};store.set("view",VIEW);closeDrawer();renderView()});
+}
+function openDrawer(){buildDrawer();$("#drawer").classList.add("open");$("#dim").classList.remove("hide")}
+function closeDrawer(){$("#drawer").classList.remove("open");$("#dim").classList.add("hide")}
+$("#menuBtn").onclick=openDrawer;$("#dim").onclick=closeDrawer;
+
+function enterApp(){
+  show("scrMain");setVer();
+  const saved=store.get("view",null),ls=visibleLessons();
+  if(saved&&saved.type==="lesson"&&ls.find(l=>l.id===saved.id))VIEW=saved;
+  else if(saved&&saved.type==="vocab")VIEW=saved;
+  else VIEW=ls.length?{type:"lesson",id:ls[0].id}:{type:"vocab"};
+  renderView();
+}
+function renderView(){
+  if(VIEW.type==="lesson"){const l=LESSONS.find(x=>x.id===VIEW.id);openLesson(l)}
+  else openVocab();
+}
+
+/* ===== 上課 ===== */
+const imgCache={};
 function imgTag(url,emoji,cls){
   if(!url)return emoji?`<div class="emo ${cls||""}">${esc(emoji)}</div>`:"";
   const src=imgCache[url]||url;
   return `<img class="${cls||""}" src="${esc(src)}" data-url="${esc(url)}" data-emoji="${esc(emoji||"")}" alt="" referrerpolicy="no-referrer" onerror="imgFail(this)">`;
 }
 async function imgFail(el){
-  const url=el.dataset.url, emoji=el.dataset.emoji;
-  el.onerror=null;
-  if(API&&!el.dataset.tried){
-    el.dataset.tried="1";
-    try{
-      const r=await fetch(API+"?img="+encodeURIComponent(url));const j=await r.json();
-      if(j.ok){imgCache[url]=j.data;el.onerror=()=>swapEmoji(el,emoji);el.src=j.data;return}
-    }catch(e){}
-  }
+  const url=el.dataset.url,emoji=el.dataset.emoji;el.onerror=null;
+  if(!el.dataset.tried){el.dataset.tried="1";
+    try{const r=await fetch(API+"?img="+encodeURIComponent(url));const j=await r.json();
+      if(j.ok){imgCache[url]=j.data;el.onerror=()=>swapEmoji(el,emoji);el.src=j.data;return}}catch(e){}}
   swapEmoji(el,emoji);
 }
-function swapEmoji(el,emoji){
-  if(emoji){const d=document.createElement("div");d.className="emo "+el.className;d.textContent=emoji;el.replaceWith(d)}else el.remove();
-}
+function swapEmoji(el,emoji){if(emoji){const d=document.createElement("div");d.className="emo "+el.className;d.textContent=emoji;el.replaceWith(d)}else el.remove()}
 
-/* ===== 導覽 ===== */
-let lesson=LESSONS[0], sec=lesson.sections[0];
-function buildNav(){
-  $("#lessonSel").innerHTML=LESSONS.map(l=>`<option value="${l.id}">${esc(l.label)}</option>`).join("");
-  $("#lessonSel").value=lesson.id;
-  $("#lessonTitle").textContent=lesson.title;
-  document.title=lesson.label+" "+lesson.title;
+let lesson=null,sec=null,mode="te";
+function openLesson(l){
+  lesson=l;sec=l.sections[0];
+  $("#topTitle").textContent=l.label;document.title=l.label+" "+l.title+"｜日語教室";
+  $("#main").innerHTML=`<h1 class="lt" lang="ja">${esc(l.title)}</h1><nav class="secnav" id="secNav"></nav><div id="view"></div>`;
+  buildSecNav();renderSec();
+}
+function buildSecNav(){
   $("#secNav").innerHTML=lesson.sections.map(s=>`<button class="pill${s===sec?" on":""}" data-k="${s.key}">${s.name}</button>`).join("");
-  $("#secNav").querySelectorAll("button").forEach(b=>b.onclick=()=>{sec=lesson.sections.find(s=>s.key===b.dataset.k);buildNav();render();window.scrollTo(0,0)});
+  $$("#secNav button").forEach(b=>b.onclick=()=>{sec=lesson.sections.find(s=>s.key===b.dataset.k);buildSecNav();renderSec();window.scrollTo(0,0)});
 }
-$("#lessonSel").onchange=async e=>{lesson=LESSONS.find(l=>l.id===e.target.value);sec=lesson.sections[0];buildNav();await loadData(lesson.deck);render()};
+function renderSec(){if(sec.type==="slides")renderSlides(sec.slides);else renderPractice(sec.level)}
 
-/* ===== 投影片 ===== */
 function renderSlides(key){
   const list=SLIDES[key];let i=0;
   $("#view").innerHTML=`<div class="slides"><div class="track">${list.map(h=>`<div class="slide">${h}</div>`).join("")}</div></div>
   <div class="dots">${list.map(()=>"<i></i>").join("")}</div>
-  <div class="snav"><button class="btn" id="prev">上一頁</button><button class="btn main" id="next">下一頁</button></div>`;
-  const track=$(".track"),dots=[...document.querySelectorAll(".dots i")];
-  const go=n=>{i=Math.max(0,Math.min(list.length-1,n));track.style.transform=`translateX(${-i*100}%)`;dots.forEach((d,k)=>d.classList.toggle("on",k===i))};
+  <div class="btns"><button class="btn" id="prev">上一頁</button><button class="btn main" id="next">下一頁</button></div>`;
+  const track=$(".track"),dots=$$(".dots i");
+  const go=n=>{i=Math.max(0,Math.min(list.length-1,n));track.style.transform=`translateX(calc(${-i*100}% - ${i*16}px))`;dots.forEach((d,k)=>d.classList.toggle("on",k===i))};
   $("#prev").onclick=()=>go(i-1);$("#next").onclick=()=>go(i+1);
   let sx=null,sy=null;const el=$(".slides");
   el.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
@@ -260,18 +553,10 @@ function renderSlides(key){
   go(0);
 }
 
-/* ===== 練習 ===== */
-let mode="te";
-function deckCards(){
-  return DATA.cards.filter(c=>c.deck===lesson.deck&&(!lesson.maxLesson||!c.lesson||c.lesson<=lesson.maxLesson));
-}
-// 抽卡：「〇〇へ行きます」一次最多一張
+function deckCards(){return ME.cards.filter(c=>c.deck===lesson.deck&&(!lesson.maxLesson||!c.lesson||c.lesson<=lesson.maxLesson))}
 function draw(n){
   const out=[];let go=false;
-  for(const c of shuffle(deckCards())){
-    if(isGo(c)){if(go)continue;go=true}
-    out.push(c);if(out.length===n)break;
-  }
+  for(const c of shuffle(deckCards())){if(isGo(c)){if(go)continue;go=true}out.push(c);if(out.length===n)break}
   return out;
 }
 function times(n){
@@ -281,16 +566,11 @@ function times(n){
 }
 const places=c=>String(c.extra||"").split(/[、,，]/).map(x=>x.trim()).filter(Boolean);
 
-function charImg(ch){
-  if(ch.img)return ch.img;
-  const f=CHAR_FILES[plainName(ch.name)];return f?`chars/${f}.png`:"";
-}
-
 function renderPractice(level){
   const n=mode==="te"?3:2;
   const cards=draw(n);
-  if(cards.length<n){$("#view").innerHTML=`<div class="box">卡片不夠，請在 Sheet 裡多加幾張。</div>`;return}
-  const ch=pick(DATA.chars), name=plainName(ch.name);
+  if(cards.length<n||!ME.chars.length){$("#view").innerHTML=`<div class="box">卡片不夠，請在 Sheet 裡多加幾張。</div>`;return}
+  const ch=pick(ME.chars),name=plainName(ch.name);
   const tms=level===3?times(n):[];
   const pls=cards.map(c=>level===3&&places(c).length?pick(places(c)):"");
   const face=(c,k)=>{
@@ -298,43 +578,35 @@ function renderPractice(level){
     const mark=level<3&&c.mark?`<span class="mark">${esc(c.mark)}</span>`:"";
     const word=level===1?`<div class="word fit">${twoLines(c.front)}</div>`:"";
     // 翻面只給提示：初級只顯示「類」；中級、高級多給ます形（不寫て形）
-    const back=level===1
-      ?`<div class="grp only">${esc(c.hint||"")}</div>`
+    const back=level===1?`<div class="grp only">${esc(c.hint||"")}</div>`
       :`<div class="te">${twoLines(c.front)}</div>${c.hint?`<div class="grp">${esc(c.hint)}</div>`:""}`;
     return `<div class="card"><div class="inner">
-      <div class="face lv${level}${level===3?" hastag":""}">${tag}${mark}<div class="pic">${imgTag(c.img,c.emoji)}</div>${word}</div>
-      <div class="face back"><div class="bk fit">${back}</div></div>
+      <div class="face lv${level}${level===3?" hastag":""}" lang="ja">${tag}${mark}<div class="pic">${imgTag(c.img,c.emoji)}</div>${word}</div>
+      <div class="face back" lang="ja"><div class="bk fit">${back}</div></div>
     </div></div>`;
   };
   const hint=mode==="te"
     ?`${esc(name)}は<span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>て、</span><span class="nw"><span class="bl"></span>ます。</span>`
     :`${esc(name)}は<span class="nw"><span class="bl"></span>てから、</span><span class="nw"><span class="bl"></span>ます。</span>`;
-  const seg=(c,k,last)=>{
-    const pre=level===3?`${tms[k]}に${pls[k]?pls[k]+"で":""}`:"";
-    if(last)return pre+c.front+"。";
-    return pre+c.back+(mode==="kara"?"から":"")+"、";
-  };
+  const seg=(c,k,last)=>{const pre=level===3?`${tms[k]}に${pls[k]?pls[k]+"で":""}`:"";if(last)return pre+c.front+"。";return pre+c.back+(mode==="kara"?"から":"")+"、"};
   const answer=name+"は"+cards.map((c,k)=>seg(c,k,k===n-1)).join("");
-  const ci=charImg(ch);
   $("#view").innerHTML=`
    <div class="modes"><button class="pill${mode==="te"?" on":""}" data-m="te">〜て、〜て、〜ます</button><button class="pill${mode==="kara"?" on":""}" data-m="kara">〜てから、〜ます</button></div>
-   <div class="who"><div class="card ccard"><div class="face"><div class="cpic">${ci?imgTag(ci,""):""}</div><div class="cname fit">${rubyName(ch.name)}</div></div></div>${level===1?`<div class="box hint big"><div>${hint}</div></div>`:`<div class="box title">${esc(name)}の1日</div>`}</div>
+   <div class="who"><div class="card ccard"><div class="face" lang="ja"><div class="cpic">${ch.img?imgTag(ch.img,""):""}</div><div class="cname fit">${rubyName(ch.name)}</div></div></div>${level===1?`<div class="box hint big" lang="ja"><div>${hint}</div></div>`:`<div class="box title" lang="ja">${esc(name)}の1日</div>`}</div>
    <div class="grid${n===2?" two":""}">${cards.map(face).join("")}</div>
-   <div class="box ans" id="ans">${esc(answer)}</div>
+   <div class="box ans" id="ans" lang="ja">${esc(answer)}</div>
    <div class="btns"><button class="btn" id="showAns">看答案</button><button class="btn main" id="again">再抽一次</button></div>
    <div class="note">點卡片可以翻面</div>`;
-  document.querySelectorAll(".card:not(.ccard)").forEach(c=>c.onclick=()=>c.classList.toggle("flip"));
-  document.querySelectorAll(".modes button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;renderPractice(level)});
+  $$(".card:not(.ccard)").forEach(c=>c.onclick=()=>c.classList.toggle("flip"));
+  $$(".modes button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;renderPractice(level)});
   $("#showAns").onclick=()=>{const a=$("#ans");a.classList.toggle("show");$("#showAns").textContent=a.classList.contains("show")?"收起答案":"看答案"};
   $("#again").onclick=()=>renderPractice(level);
   fitAll();
 }
-
-// 字太長就縮小，直到塞進框裡
+// 字太長就縮小
 function fitAll(){
-  document.querySelectorAll(".fit,.tags span").forEach(el=>{
-    el.style.fontSize="";
-    let fs=parseFloat(getComputedStyle(el).fontSize);
+  $$(".fit,.tags span").forEach(el=>{
+    el.style.fontSize="";let fs=parseFloat(getComputedStyle(el).fontSize);
     const over=()=>el.scrollWidth>el.clientWidth+1||el.scrollHeight>el.clientHeight+1;
     while(over()&&fs>9){fs-=1;el.style.fontSize=fs+"px"}
   });
@@ -342,12 +614,122 @@ function fitAll(){
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitAll);
 let rsz;window.addEventListener("resize",()=>{clearTimeout(rsz);rsz=setTimeout(fitAll,150)});
 
-function render(){
-  if(sec.type==="slides")renderSlides(sec.slides);else renderPractice(sec.level);
+/* ===== 單字卡 ===== */
+// 假名：漢字{よみ}；挖空：《…》
+// 數字＋漢字：讀音比較長（例如 3階{さんがい}）或在單字欄、《》裡時，假名蓋住數字
+function ruby(s,full){
+  return esc(s).replace(/([0-9０-９]*)([㐀-鿿々〆ヶ]+)\{([^}]+)\}/g,(m,d,k,r)=>{
+    if(d&&(full||r.length>k.length*2))return `<ruby>${d}${k}<rt>${r}</rt></ruby>`;
+    return `${d}<ruby>${k}<rt>${r}</rt></ruby>`;
+  });
+}
+function exampleHTML(s,mode){ // mode: blank | open | full
+  const parts=String(s).split(/《|》/);
+  return parts.map((p,i)=>{
+    if(i%2===0)return ruby(p,false);
+    if(mode==="blank")return `<span class="blank" aria-label="空格"></span>`;
+    return `<span class="tgt">${ruby(p,true)}</span>`;
+  }).join("");
+}
+function reading(furi){
+  return String(furi).replace(/[0-9０-９]*[㐀-鿿々〆ヶ]+\{([^}]+)\}/g,"$1").replace(/[〜～]/g,"");
+}
+let jaVoice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang));jaVoice=vs.find(v=>/Kyoko|O-ren|Otoya|Google/.test(v.name))||vs[0]||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.9;if(jaVoice)u.voice=jaVoice;speechSynthesis.speak(u);
 }
 
-(async()=>{buildNav();setVer();render();await loadData(lesson.deck);if(sec.type==="practice")render()})();
+const V={group:null,from:null,to:null,list:[],i:0,back:false,open:false,zh:false};
+function vocabGroups(){return [...new Set(ME.vocab.map(v=>v[7]))]}
+function lessonRange(){const ls=ME.vocab.filter(v=>v[7]===V.group).map(v=>v[0]);return [Math.min(...ls),Math.max(...ls)]}
+function buildList(keepOrder){
+  V.list=ME.vocab.filter(v=>v[7]===V.group&&v[0]>=V.from&&v[0]<=V.to);
+  if(!keepOrder)V.list.sort((a,b)=>a[0]-b[0]);
+  V.i=0;resetCard();
+}
+function resetCard(){V.back=false;V.open=false;V.zh=false}
+function openVocab(){
+  $("#topTitle").textContent="單字卡";document.title="單字卡｜日語教室";
+  if(!ME.vocab||!ME.vocab.length){$("#main").innerHTML=`<div class="box empty">還沒有可以背的單字</div>`;return}
+  const gs=vocabGroups();const saved=store.get("vocab",{});
+  V.group=gs.includes(saved.group)?saved.group:gs[0];
+  const [lo,hi]=lessonRange();
+  V.from=Math.max(lo,Math.min(hi,saved.from||lo));V.to=Math.max(V.from,Math.min(hi,saved.to||hi));
+  document.body.classList.toggle("nokana",store.get("kana",true)===false);
+  buildList();renderVocab();
+}
+function saveVocab(){store.set("vocab",{group:V.group,from:V.from,to:V.to})}
+function renderVocab(){
+  const gs=vocabGroups(),[lo,hi]=lessonRange();
+  const opts=(sel)=>{let h="";for(let n=lo;n<=hi;n++)h+=`<option value="${n}"${n===sel?" selected":""}>${n}</option>`;return h};
+  const kana=store.get("kana",true)!==false;
+  const w=V.list[V.i];
+  let card="",ex="",prog="";
+  if(!w){card=`<div class="box empty">這個範圍沒有單字</div>`}
+  else{
+    const [ls,word,furi,pos,zh,exj,exz]=w;
+    prog=`第 ${ls} 課・${V.i+1} / ${V.list.length}`;
+    if(!V.back){
+      card=`<div class="box vcard fluff" id="vcard" role="button" tabindex="0" aria-label="翻面">
+        <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
+        <button class="reveal${V.open?" open":""}" id="reveal" lang="ja">${V.open?ruby(furi,true):ICON_EYE+"點一下看日文"}</button>
+        <div class="vhint">${V.open?"點卡片翻面看中文":"先聽讀音，想想看是哪個字"}</div></div>`;
+      ex=exj?`<div class="box vex"><div class="jp" lang="ja">${exampleHTML(exj,V.open?"open":"blank")}</div><small>點卡片翻面看中文</small></div>`:"";
+    }else{
+      card=`<div class="box vcard backside fluff" id="vcard" role="button" tabindex="0" aria-label="翻回正面">
+        ${pos?`<span class="vpos">${esc(pos)}</span>`:""}
+        <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
+        <div class="vzh">${esc(zh)}</div>
+        <div class="vjp" lang="ja">${ruby(furi,true)}</div></div>`;
+      ex=exj?`<div class="box vex"><div class="jp tap" id="exjp" lang="ja" role="button" tabindex="0">${exampleHTML(exj,"full")}</div>${V.zh?`<div class="zh">${esc(exz)}</div>`:`<small>點例句看中文翻譯</small>`}</div>`:"";
+    }
+  }
+  $("#main").innerHTML=`<div class="vwrap">
+    <div class="vctl">
+      ${gs.length>1?`<select id="vgrp" aria-label="單字組">${gs.map(g=>`<option${g===V.group?" selected":""}>${esc(g)}</option>`).join("")}</select>`:""}
+      <label>第<select id="vfrom" aria-label="從第幾課">${opts(V.from)}</select>課</label><span>～</span>
+      <label>第<select id="vto" aria-label="到第幾課">${opts(V.to)}</select>課</label>
+      <span class="sp"></span>
+      <button class="tgl" id="kana" aria-pressed="${kana}">假名<i></i></button>
+    </div>
+    <div class="vprog">${prog}</div>
+    ${card}${ex}
+    <div class="vnav"><button class="btn" id="vprev">上一張</button><button class="btn" id="vshuf">${ICON_SHUF}洗牌</button><button class="btn main" id="vnext">下一張</button></div>
+  </div>`;
+  const g=$("#vgrp");if(g)g.onchange=()=>{V.group=g.value;const [a,b]=lessonRange();V.from=a;V.to=b;saveVocab();buildList();renderVocab()};
+  $("#vfrom").onchange=e=>{V.from=+e.target.value;if(V.to<V.from)V.to=V.from;saveVocab();buildList();renderVocab()};
+  $("#vto").onchange=e=>{V.to=+e.target.value;if(V.from>V.to)V.from=V.to;saveVocab();buildList();renderVocab()};
+  $("#kana").onclick=()=>{const on=store.get("kana",true)===false;store.set("kana",on);document.body.classList.toggle("nokana",!on);$("#kana").setAttribute("aria-pressed",on)};
+  $("#vprev").onclick=()=>{if(!V.list.length)return;V.i=(V.i-1+V.list.length)%V.list.length;resetCard();renderVocab()};
+  $("#vnext").onclick=()=>{if(!V.list.length)return;V.i=(V.i+1)%V.list.length;resetCard();renderVocab()};
+  $("#vshuf").onclick=()=>{V.list=shuffle(V.list);V.i=0;resetCard();renderVocab()};
+  if(!w)return;
+  const flip=()=>{V.back=!V.back;V.zh=false;renderVocab()};
+  $("#vcard").onclick=flip;
+  $("#vcard").onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target.id==="vcard"){e.preventDefault();flip()}};
+  $("#vspk").onclick=e=>{e.stopPropagation();speak(reading(w[2]))};
+  const rv=$("#reveal");if(rv)rv.onclick=e=>{e.stopPropagation();V.open=!V.open;renderVocab()};
+  const ej=$("#exjp");if(ej){const t=()=>{V.zh=!V.zh;renderVocab()};ej.onclick=t;ej.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();t()}}}
+}
 
+/* ===== 啟動 ===== */
+(async()=>{
+  applyTheme(store.get("theme","blue"));
+  const cache=store.get("me",null);
+  // 有快取就先顯示，背景再更新
+  if(cache&&cache.user&&cache.user.displayName){ME={...cache,offline:false};enterApp()}
+  const ok=await initGsi();
+  if(tokenOk()){loadMe();return}
+  if(cache&&cache.user&&cache.user.displayName&&ok){
+    // 已登入過：自動取得新的登入憑證
+    google.accounts.id.prompt();
+    return;
+  }
+  renderLogin();
+})();
 </script>
 </body>
 </html>
