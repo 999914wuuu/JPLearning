@@ -94,6 +94,8 @@ body.nokana .vwrap rt{display:none}
 .th i{width:30px;height:30px;border-radius:9px;border:1px solid #D9D2C0;display:flex;align-items:center;justify-content:center}
 .th i::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--c)}
 .th span{flex:1}
+.vrow{display:flex;gap:8px}
+.vrow select{flex:1;min-width:0;height:44px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px;color:var(--ink)}
 .sheet small{font-size:13px;color:var(--sub)}
 
 /* 登入、開通、第一次登入 */
@@ -291,12 +293,14 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
   <div class="handle"></div>
   <h2>主題</h2>
   <div id="thList" style="display:flex;flex-direction:column;gap:8px"></div>
-  <small>只會記在這台裝置</small>
+  <h2>語音</h2>
+  <div class="vrow"><select id="voiceSel" aria-label="語音"></select><button class="btn" id="voiceTry" style="flex:none">試聽</button></div>
+  <small>主題和語音只會記在這台裝置</small>
 </div>
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.1.0";
+const VERSION = "v3.1.1";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
@@ -378,7 +382,7 @@ function applyTheme(t){
   $("#thList").innerHTML=THEMES.map(([k,n,bg,c])=>`<button class="th${k===t?" on":""}" data-k="${k}" aria-pressed="${k===t}"><i style="background:${bg};--c:${c}"></i><span>${n}</span></button>`).join("");
   $$("#thList .th").forEach(b=>b.onclick=()=>applyTheme(b.dataset.k));
 }
-function openSheet(o){$("#sheet").classList.toggle("hide",!o);$("#sheetDim").classList.toggle("hide",!o)}
+function openSheet(o){if(o)pickVoice();$("#sheet").classList.toggle("hide",!o);$("#sheetDim").classList.toggle("hide",!o)}
 $("#themeBtn").onclick=()=>{closeDrawer();openSheet(true)};
 $("#sheetDim").onclick=()=>openSheet(false);
 
@@ -643,8 +647,16 @@ function reading(furi){
   return String(furi).replace(/[0-9０-９]*[㐀-鿿々〆ヶ]+\{([^}]+)\}/g,"$1").replace(/[〜～]/g,"");
 }
 let jaVoice=null;
-function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang));jaVoice=vs.find(v=>/Kyoko|O-ren|Otoya|Google/.test(v.name))||vs[0]||null}
+const jaVoices=()=>"speechSynthesis" in window?speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang)):[];
+const voiceRank=v=>{const t=(v.name+" "+v.voiceURI).toLowerCase();return /premium|プレミアム|高品質/.test(t)?3:/enhanced|拡張|強化|加強|增強/.test(t)?2:/kyoko|o-ren|otoya|google/.test(t)?1:0};
+function pickVoice(){const vs=jaVoices();const saved=store.get("voice","");
+  jaVoice=vs.find(v=>v.voiceURI===saved)||vs.slice().sort((a,b)=>voiceRank(b)-voiceRank(a))[0]||null;fillVoiceSel()}
+function fillVoiceSel(){const sel=$("#voiceSel");if(!sel)return;const vs=jaVoices();
+  sel.innerHTML=vs.length?vs.map(v=>`<option value="${esc(v.voiceURI)}"${jaVoice&&v.voiceURI===jaVoice.voiceURI?" selected":""}>${esc(v.name)}</option>`).join(""):`<option>這台裝置沒有日文語音</option>`;
+  sel.disabled=!vs.length}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+document.addEventListener("change",e=>{if(e.target.id==="voiceSel"){store.set("voice",e.target.value);pickVoice();speak("こんにちは")}});
+document.addEventListener("click",e=>{if(e.target.closest("#voiceTry"))speak("こんにちは、よろしくお願いします")});
 function speak(text){
   if(!("speechSynthesis" in window))return;
   speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.9;if(jaVoice)u.voice=jaVoice;speechSynthesis.speak(u);
