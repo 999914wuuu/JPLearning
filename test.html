@@ -222,7 +222,8 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 .vhint{font-size:14px;color:var(--sub)}
 .vzh{font-size:36px;font-weight:700;line-height:1.3}
 .vjp{font-size:22px;color:var(--main);line-height:1.6}
-.vex{margin-top:12px;cursor:default}
+.vex{margin-top:12px;cursor:default;position:relative;padding-right:60px}
+.exspk{position:absolute;top:50%;right:10px;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--main);display:flex;align-items:center;justify-content:center}
 .vex .jp{font-size:20px;line-height:1.6;padding-top:.35em}
 .vex .jp.tap{cursor:pointer}
 .vex .zh{font-size:16px;color:var(--sub);border-top:1px dashed var(--line);padding-top:4px;margin-top:4px}
@@ -304,7 +305,7 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.2.1";
+const VERSION = "v3.2.3";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
@@ -676,6 +677,11 @@ function cloudSpeak(text){
     deviceSpeak(text);
   }).catch(()=>deviceSpeak(text));
 }
+// 例句念整句：拿掉《》和假名標記，送漢字；標片假名的人名改送讀音
+const plainJP=t=>String(t||"").replace(/[《》]/g,"").replace(/([0-9０-９]*[㐀-鿿々〆ヶ]+)\{([^}]*)\}/g,(m,k,r)=>/[ァ-ヺ]/.test(r)?r:k);  // 片假名讀音（人名，例：猫猫{マオマオ}）就念讀音
+const EXSPK='<button class="exspk" id="exspk" aria-label="念出例句">'+ICON_SPK+'</button>';
+// 念的內容：「念法」欄有填就用它，沒有就用單字本身（漢字比假名更容易念對重音）
+function sayText(w){return (w[10]||w[1]||reading(w[2])).replace(/[〜～]/g,"")}
 function speak(text){
   if(voicePref()==="cloud"&&!ttsDown&&navigator.onLine!==false&&tokenOk())cloudSpeak(text);
   else deviceSpeak(text);
@@ -729,14 +735,14 @@ function renderVocab(){
         <button class="vspk big" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
         <button class="reveal${V.open?" open":""}" id="reveal" lang="ja">${V.open?`<span class="rw">${ruby(furi,true)}</span>`:ICON_EYE+"點一下看日文"}</button>
         <div class="vhint">${V.open?"點卡片翻面看中文":"先聽讀音，想想看是哪個字"}</div></div>`;
-      ex=exj?`<div class="box vex"><div class="jp" lang="ja">${exampleHTML(exj,V.open?"open":"blank")}</div><small>點卡片翻面看中文</small></div>`:"";
+      ex=exj?`<div class="box vex"><div class="jp" lang="ja">${exampleHTML(exj,V.open?"open":"blank")}</div><small>點卡片翻面看中文</small>${EXSPK}</div>`:"";
     }else{
       card=`<div class="box vcard backside fluff" id="vcard" role="button" tabindex="0" aria-label="翻回正面">
         ${pos?`<span class="vpos">${esc(pos)}</span>`:""}
         <div class="vzh">${esc(zh)}</div>
         <div class="vjp" lang="ja">${ruby(furi,true)}</div>
         <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button></div>`;
-      ex=exj?`<div class="box vex"><div class="jp tap" id="exjp" lang="ja" role="button" tabindex="0">${exampleHTML(exj,"full")}</div>${V.zh?`<div class="zh">${esc(exz)}</div>`:`<small>點例句看中文翻譯</small>`}</div>`:"";
+      ex=exj?`<div class="box vex"><div class="jp tap" id="exjp" lang="ja" role="button" tabindex="0">${exampleHTML(exj,"full")}</div>${V.zh?`<div class="zh">${esc(exz)}</div>`:`<small>點例句看中文翻譯</small>`}${EXSPK}</div>`:"";
     }
   }
   $("#main").innerHTML=`<div class="vwrap">
@@ -766,7 +772,8 @@ function renderVocab(){
   const flip=()=>{V.back=!V.back;V.zh=false;renderVocab()};
   $("#vcard").onclick=flip;
   $("#vcard").onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target.id==="vcard"){e.preventDefault();flip()}};
-  $("#vspk").onclick=e=>{e.stopPropagation();speak(reading(w[2]))};
+  $("#vspk").onclick=e=>{e.stopPropagation();speak(sayText(w))};
+  const xs=$("#exspk");if(xs)xs.onclick=e=>{e.stopPropagation();speak(plainJP(w[5]))};
   const rv=$("#reveal");if(rv)rv.onclick=e=>{e.stopPropagation();V.open=!V.open;renderVocab()};
   const ej=$("#exjp");if(ej){const t=()=>{V.zh=!V.zh;renderVocab()};ej.onclick=t;ej.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();t()}}}
 }
