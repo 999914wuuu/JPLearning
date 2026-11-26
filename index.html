@@ -241,7 +241,7 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 <!-- 還沒開通 -->
 <section id="scrNotReg" class="center hide">
   <h1>還沒開通喔</h1>
-  <p>請找老師幫你開通<br><span id="nrEmail"></span></p>
+  <p>已經通知老師了，等老師開通後重新整理就好<br><span id="nrEmail"></span></p>
   <button class="btn" id="nrSwitch" style="flex:none;width:100%">換一個帳號</button>
 </section>
 
@@ -293,7 +293,7 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.0.1";
+const VERSION = "v3.0.3";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
@@ -395,9 +395,12 @@ async function api(body){
   finally{clearTimeout(tm)}
 }
 
+let cfgFail=false;
 async function getClientId(){
-  let id=store.get("clientId","");
-  try{const r=await fetch(API+"?config=1");const j=await r.json();if(j.ok&&j.clientId){id=j.clientId;store.set("clientId",id)}}catch(e){}
+  let id=store.get("clientId","");cfgFail=false;
+  const ac=new AbortController();const tm=setTimeout(()=>ac.abort(),10000);
+  try{const r=await fetch(API+"?config=1",{signal:ac.signal});const j=await r.json();if(j.ok&&j.clientId){id=j.clientId;store.set("clientId",id)}}catch(e){cfgFail=true}
+  finally{clearTimeout(tm)}
   return id;
 }
 
@@ -411,7 +414,7 @@ function loadGsi(){
 let gsiReady=false;
 async function initGsi(){
   const id=await getClientId();
-  if(!/apps\.googleusercontent\.com$/.test(id)){$("#loginMsg").textContent="登入還沒設定好（Apps Script 的 CLIENT_ID）";return false}
+  if(!/apps\.googleusercontent\.com$/.test(id)){$("#loginMsg").textContent=cfgFail?"連不到 Apps Script，請稍後重新整理":"登入還沒設定好（Apps Script 的 CLIENT_ID）";return false}
   try{await loadGsi()}catch(e){$("#loginMsg").textContent="連不到 Google 登入，請檢查網路";return false}
   google.accounts.id.initialize({client_id:id,callback:onCredential,auto_select:true,cancel_on_tap_outside:false});
   gsiReady=true;return true;
@@ -721,7 +724,9 @@ function renderVocab(){
   const cache=store.get("me",null);
   // 有快取就先顯示，背景再更新
   if(cache&&cache.user&&cache.user.displayName){ME={...cache,offline:false};enterApp()}
+  else{show("scrLogin");setVer();$("#loginMsg").textContent="載入中…"}
   const ok=await initGsi();
+  if(ok&&$("#loginMsg").textContent==="載入中…")$("#loginMsg").textContent="";
   if(tokenOk()){loadMe();return}
   if(cache&&cache.user&&cache.user.displayName&&ok){
     // 已登入過：自動取得新的登入憑證
