@@ -208,10 +208,14 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 .tgl[aria-pressed=true] i{background:var(--main)}
 .tgl[aria-pressed=true] i::after{transform:translateX(14px)}
 .vprog{font-size:14px;color:var(--sub);margin:10px 2px}
-.vcard{position:relative;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:56px 18px 24px;cursor:pointer;user-select:none;-webkit-user-select:none;text-align:center}
+.vcard{position:relative;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px 18px 24px;cursor:pointer;user-select:none;-webkit-user-select:none;text-align:center}
 .vcard.backside{background:var(--soft)}
-.vspk{position:absolute;top:12px;right:12px;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--main);display:flex;align-items:center;justify-content:center}
+.vspk{flex:none;width:52px;height:52px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--main);display:flex;align-items:center;justify-content:center}
 .vcard.backside .vspk{background:var(--card)}
+.vspk.big{width:76px;height:76px}
+.vcard.backside{padding-top:44px}
+.vspk.big svg{width:34px;height:34px}
+.reveal .rw{display:inline}
 .vpos{position:absolute;top:14px;left:14px;font-size:14px;font-weight:500;padding:4px 12px;border-radius:999px;background:var(--card);color:var(--main);border:1px solid var(--line)}
 .reveal{min-width:220px;max-width:100%;min-height:64px;padding:8px 16px;border-radius:14px;border:2px dashed var(--line);background:var(--card);color:var(--sub);font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px}
 .reveal.open{border-style:solid;color:var(--ink);font-size:30px;font-weight:700;line-height:1.6}
@@ -300,7 +304,7 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.1.1";
+const VERSION = "v3.2.1";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
@@ -649,17 +653,32 @@ function reading(furi){
 let jaVoice=null;
 const jaVoices=()=>"speechSynthesis" in window?speechSynthesis.getVoices().filter(v=>/^ja/i.test(v.lang)):[];
 const voiceRank=v=>{const t=(v.name+" "+v.voiceURI).toLowerCase();return /premium|プレミアム|高品質/.test(t)?3:/enhanced|拡張|強化|加強|增強/.test(t)?2:/kyoko|o-ren|otoya|google/.test(t)?1:0};
-function pickVoice(){const vs=jaVoices();const saved=store.get("voice","");
+const voicePref=()=>store.get("voice","cloud")||"cloud";
+function pickVoice(){const vs=jaVoices();const saved=voicePref();
   jaVoice=vs.find(v=>v.voiceURI===saved)||vs.slice().sort((a,b)=>voiceRank(b)-voiceRank(a))[0]||null;fillVoiceSel()}
-function fillVoiceSel(){const sel=$("#voiceSel");if(!sel)return;const vs=jaVoices();
-  sel.innerHTML=vs.length?vs.map(v=>`<option value="${esc(v.voiceURI)}"${jaVoice&&v.voiceURI===jaVoice.voiceURI?" selected":""}>${esc(v.name)}</option>`).join(""):`<option>這台裝置沒有日文語音</option>`;
-  sel.disabled=!vs.length}
+function fillVoiceSel(){const sel=$("#voiceSel");if(!sel)return;const vs=jaVoices();const cur=voicePref();
+  sel.innerHTML=`<option value="cloud"${cur==="cloud"?" selected":""}>Google 自然語音</option>`+vs.map(v=>`<option value="${esc(v.voiceURI)}"${cur!=="cloud"&&jaVoice&&v.voiceURI===jaVoice.voiceURI?" selected":""}>手機：${esc(v.name)}</option>`).join("")}
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 document.addEventListener("change",e=>{if(e.target.id==="voiceSel"){store.set("voice",e.target.value);pickVoice();speak("こんにちは")}});
 document.addEventListener("click",e=>{if(e.target.closest("#voiceTry"))speak("こんにちは、よろしくお願いします")});
-function speak(text){
+const SILENT="data:audio/wav;base64,UklGRmQGAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YUAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+const AU=new Audio();const ttsMem={};let ttsDown=false;
+function deviceSpeak(text){
   if(!("speechSynthesis" in window))return;
   speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.9;if(jaVoice)u.voice=jaVoice;speechSynthesis.speak(u);
+}
+function cloudSpeak(text){
+  if(ttsMem[text]){AU.src=ttsMem[text];AU.play().catch(()=>deviceSpeak(text));return}
+  AU.src=SILENT;AU.play().catch(()=>{});   // iPhone：先在點擊當下解鎖播放
+  api({action:"tts",token:TOKEN,text}).then(j=>{
+    if(j&&j.ok&&j.audio){const u="data:audio/mpeg;base64,"+j.audio;ttsMem[text]=u;AU.src=u;AU.play().catch(()=>deviceSpeak(text));return}
+    if(j&&(j.reason==="tts_limit"||j.reason==="tts_off"))ttsDown=true;
+    deviceSpeak(text);
+  }).catch(()=>deviceSpeak(text));
+}
+function speak(text){
+  if(voicePref()==="cloud"&&!ttsDown&&navigator.onLine!==false&&tokenOk())cloudSpeak(text);
+  else deviceSpeak(text);
 }
 
 const V={group:null,from:null,to:null,cat:"",pos:"",date:"",list:[],i:0,back:false,open:false,zh:false};
@@ -707,16 +726,16 @@ function renderVocab(){
     prog=(ls>0?`第 ${ls} 課・`:w[8]?`${esc(w[8])}・`:"")+`${V.i+1} / ${V.list.length}`;
     if(!V.back){
       card=`<div class="box vcard fluff" id="vcard" role="button" tabindex="0" aria-label="翻面">
-        <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
-        <button class="reveal${V.open?" open":""}" id="reveal" lang="ja">${V.open?ruby(furi,true):ICON_EYE+"點一下看日文"}</button>
+        <button class="vspk big" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
+        <button class="reveal${V.open?" open":""}" id="reveal" lang="ja">${V.open?`<span class="rw">${ruby(furi,true)}</span>`:ICON_EYE+"點一下看日文"}</button>
         <div class="vhint">${V.open?"點卡片翻面看中文":"先聽讀音，想想看是哪個字"}</div></div>`;
       ex=exj?`<div class="box vex"><div class="jp" lang="ja">${exampleHTML(exj,V.open?"open":"blank")}</div><small>點卡片翻面看中文</small></div>`:"";
     }else{
       card=`<div class="box vcard backside fluff" id="vcard" role="button" tabindex="0" aria-label="翻回正面">
         ${pos?`<span class="vpos">${esc(pos)}</span>`:""}
-        <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button>
         <div class="vzh">${esc(zh)}</div>
-        <div class="vjp" lang="ja">${ruby(furi,true)}</div></div>`;
+        <div class="vjp" lang="ja">${ruby(furi,true)}</div>
+        <button class="vspk" id="vspk" aria-label="念出讀音">${ICON_SPK}</button></div>`;
       ex=exj?`<div class="box vex"><div class="jp tap" id="exjp" lang="ja" role="button" tabindex="0">${exampleHTML(exj,"full")}</div>${V.zh?`<div class="zh">${esc(exz)}</div>`:`<small>點例句看中文翻譯</small>`}</div>`:"";
     }
   }
