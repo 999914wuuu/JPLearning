@@ -50,7 +50,8 @@ button,select,input{font:inherit;color:inherit}
 button{cursor:pointer}
 .hide{display:none!important}
 /* 假名：大小 0.5em、行距 0.6 */
-rt{font-size:.5em;font-weight:400;line-height:.6}
+ruby{ruby-align:center}
+rt{font-size:.5em;font-weight:400;line-height:.6;ruby-align:center}
 body.nokana .vwrap rt{display:none}
 
 /* ===== 版面 ===== */
@@ -199,6 +200,22 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 .vctl label{display:flex;align-items:center;gap:6px;font-size:16px}
 .vctl select{height:44px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:500;color:var(--ink)}
 .vctl .sp{flex:1}
+.vcard.ivback{justify-content:flex-start;text-align:left;align-items:stretch;gap:10px;padding-top:68px}
+.ivzh{font-size:22px;font-weight:700;line-height:1.4}
+.ivjp{font-size:18px;color:var(--main);line-height:1.7}
+.ivtips{margin:0;padding-left:1.2em;font-size:15px;line-height:1.6;color:var(--ink)}
+.ivtips li{margin:2px 0}
+.ivfollow{font-size:14px;color:var(--sub)}
+.ivback .vspk{align-self:center}
+.reveal.open.iv{font-size:20px;line-height:1.8;font-weight:600;text-align:left}
+.ivsel{height:44px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:16px;font-weight:500;color:var(--ink)}
+.ivlead{font-size:15px;color:var(--sub);margin:4px 2px 0}
+.ivph .jp{font-size:19px}
+.ivnote{margin-top:12px;padding:16px}
+.ivnote h3{font-size:17px;margin-bottom:8px}
+.ivnote ul{padding-left:1.2em;font-size:15px;line-height:1.7}
+.ivnote li{margin:4px 0}
+
 .vfil{display:flex;gap:8px;margin-top:8px}
 .vfil select{flex:1;min-width:0;height:44px;padding:0 8px;border-radius:12px;border:1px solid var(--line);background:var(--card);font-size:15px;font-weight:500;color:var(--ink)}
 .vfil select.on{border-color:var(--accent,var(--ink));font-weight:700}
@@ -305,12 +322,17 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.2.3";
+const VERSION = "v3.4.0";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
 /* ===== 課程（新的一課往上加；classes 寫哪些班級看得到，老師全部都看得到） ===== */
 const LESSONS=[
+ {id:"20261129",label:"2026-11-29",title:"模擬面試",classes:["林妹"],sections:[
+   {key:"iq",name:"題目卡",type:"interview"},
+   {key:"save",name:"救命句",type:"phrases"},
+   {key:"tips",name:"回答原則",type:"notes"},
+ ]},
  {id:"20261119",label:"2026-11-19 第16課",title:"○○の1日",deck:"○○の1日",classes:["會計社團"],sections:[
    {key:"grammar",name:"文法說明",type:"slides",slides:"grammar"},
    {key:"easy",name:"初級",type:"practice",level:1},
@@ -455,6 +477,7 @@ async function loadMe(){
   }
 }
 function handleMe(j){
+  if(j.ok&&j.session){TOKEN=j.session;store.set("token",TOKEN)}
   if(j.ok){ME={user:j.user,cards:j.cards,chars:j.chars,vocab:j.vocab,offline:false};store.set("me",{user:j.user,cards:j.cards,chars:j.chars,vocab:j.vocab});
     if(!j.user.displayName){openProfile(true);return}
     enterApp();return}
@@ -551,10 +574,11 @@ function openLesson(l){
   buildSecNav();renderSec();
 }
 function buildSecNav(){
+  $("#secNav").style.gridTemplateColumns=`repeat(${lesson.sections.length},minmax(0,1fr))`;
   $("#secNav").innerHTML=lesson.sections.map(s=>`<button class="pill${s===sec?" on":""}" data-k="${s.key}">${s.name}</button>`).join("");
   $$("#secNav button").forEach(b=>b.onclick=()=>{sec=lesson.sections.find(s=>s.key===b.dataset.k);buildSecNav();renderSec();window.scrollTo(0,0)});
 }
-function renderSec(){if(sec.type==="slides")renderSlides(sec.slides);else renderPractice(sec.level)}
+function renderSec(){if(sec.type==="slides")renderSlides(sec.slides);else if(sec.type==="interview")renderInterview();else if(sec.type==="phrases")renderPhrases();else if(sec.type==="notes")renderNotes();else renderPractice(sec.level)}
 
 function renderSlides(key){
   const list=SLIDES[key];let i=0;
@@ -778,6 +802,94 @@ function renderVocab(){
   const ej=$("#exjp");if(ej){const t=()=>{V.zh=!V.zh;renderVocab()};ej.onclick=t;ej.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();t()}}}
 }
 
+
+/* ===== 模擬面試（林妹） ===== */
+const IV_CATS=["開場","讀書計畫","生活自理","了解你這個人","結尾"];
+const IV_FIRST="先講結論，例如「はい、大丈夫です。〇〇するつもりです」，再補一個具體做法";
+const IV_PLAN="回答要對得上讀書計畫";
+const IV_LIFE="生活題一兩句就夠，不要背長稿";
+const IV=[
+ ["開場","まず、自己紹介{じこしょうかい}をお願{ねが}いします。","首先，請自我介紹。",[IV_FIRST]],
+ ["開場","日本語{にほんご}はどのくらい勉強{べんきょう}していますか。","你學日文學了多久？",[IV_FIRST]],
+ ["開場","日本{にほん}に行{い}ったことがありますか。","你去過日本嗎？",[IV_FIRST]],
+ ["讀書計畫","どうして北海道大学{ほっかいどうだいがく}を選{えら}びましたか。","你為什麼選北海道大學？",[IV_PLAN,IV_FIRST]],
+ ["讀書計畫","留学中{りゅうがくちゅう}、どんな授業{じゅぎょう}を取{と}りたいですか。","留學期間你想修什麼課？",[IV_PLAN,"日本法入門（北大法學部為外國人開設）","已在臺大修過的民法IV（親族・相續）、刑法I・II、勞動法","臺大沒有或較少開的比較法I・II、羅馬法"]],
+ ["讀書計畫","どうして労働法{ろうどうほう}に興味{きょうみ}を持{も}ちましたか。","你為什麼會對勞動法有興趣？",[IV_PLAN,"臺灣勞動部和法院的見解常不一致","想了解日本勞動法在實務上有沒有對女性造成直接或間接歧視"]],
+ ["讀書計畫","比較法{ひかくほう}を勉強{べんきょう}して、将来{しょうらい}どう生{い}かしたいですか。","學了比較法之後，你將來想怎麼運用？",[IV_PLAN,"想學法學研究方法，臺大這類課程較少"]],
+ ["讀書計畫","日本語{にほんご}で法律{ほうりつ}の授業{じゅぎょう}を受{う}けるのは大変{たいへん}だと思{おも}いますが、大丈夫{だいじょうぶ}ですか。","用日文上法律課應該很辛苦，你沒問題嗎？",[IV_PLAN,"第一學期先適應生活、上「一般日本語コース」，加強聽力和口說，累積日文文獻的閱讀能力","第二學期（春季學期）再參加徐行老師的演習課、ゼミ旁聽"]],
+ ["讀書計畫","聞{き}く力{ちから}や話{はな}す力{ちから}は、どうやって伸{の}ばすつもりですか。","你打算怎麼提升聽力和口說？",[IV_PLAN,"第一學期上「一般日本語コース」，加強聽力和口說"]],
+ ["讀書計畫","出発{しゅっぱつ}までに、どんな準備{じゅんび}をしますか。","出發前你會做哪些準備？",[IV_PLAN,"繼續加強日文、讀日文法學文獻","希望修系上的「日文法學名著選讀」"]],
+ ["生活自理","一人暮{ひとりぐ}らしをしたことがありますか。料理{りょうり}はできますか。","你有自己一個人住過嗎？會煮飯嗎？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","北海道{ほっかいどう}の冬{ふゆ}はとても寒{さむ}いですが、大丈夫{だいじょうぶ}ですか。","北海道的冬天很冷，你沒問題嗎？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","病気{びょうき}になったら、どうしますか。","生病的話你會怎麼辦？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","困{こま}ったことがあったら、誰{だれ}に相談{そうだん}しますか。","遇到困難時你會找誰商量？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","ホームシックになったら、どうしますか。","想家的話你會怎麼辦？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","日本人{にほんじん}の友達{ともだち}を作{つく}るために、何{なに}をしたいですか。","為了交日本朋友，你想做些什麼？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","地震{じしん}や大雪{おおゆき}のときは、どうしますか。","遇到地震或大雪時你會怎麼辦？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","ゴミの分{わ}け方{かた}など、日本{にほん}の生活{せいかつ}のルールを知{し}っていますか。","你知道垃圾分類等日本生活上的規定嗎？",[IV_FIRST,IV_LIFE]],
+ ["生活自理","ストレスがたまったら、どうしますか。","壓力大的時候你會怎麼辦？",[IV_FIRST,IV_LIFE]],
+ ["了解你這個人","長所{ちょうしょ}と短所{たんしょ}を教{おし}えてください。","請說說你的優點和缺點。",[IV_FIRST]],
+ ["了解你這個人","休{やす}みの日{ひ}は何{なに}をしていますか。","放假的時候你都做什麼？",[IV_FIRST]],
+ ["了解你這個人","最近{さいきん}読{よ}んだ本{ほん}について教{おし}えてください。","請談談你最近讀的書。",[IV_FIRST]],
+ ["結尾","最後{さいご}に、何{なに}か質問{しつもん}はありますか。","最後，你有什麼問題想問嗎？",["先準備 1～2 個問題，不要回答「特にありません」"]],
+];
+const IVS={cat:"",list:[],i:0,open:false,back:false};
+function ivBuild(shuf){IVS.list=IV.filter(q=>!IVS.cat||q[0]===IVS.cat);if(shuf)IVS.list=shuffle(IVS.list);IVS.i=0;IVS.open=false;IVS.back=false}
+function renderInterview(){
+  if(!IVS.list.length)ivBuild(false);
+  const kana=store.get("kana",true)!==false;
+  const q=IVS.list[IVS.i];
+  const [cat,jp,zh,hints]=q;
+  const card=!IVS.back
+    ?`<div class="box vcard fluff" id="ivcard" role="button" tabindex="0" aria-label="翻面">
+        <button class="vspk big" id="ivspk" aria-label="念出題目">${ICON_SPK}</button>
+        <button class="reveal${IVS.open?" open iv":""}" id="ivrev" lang="ja">${IVS.open?`<span class="rw">${ruby(jp,true)}</span>`:ICON_EYE+"點一下看題目"}</button>
+        <div class="vhint">${IVS.open?"點卡片翻面看提示":"先聽題目，聽不懂就說救命句"}</div></div>`
+    :`<div class="box vcard backside fluff ivback" id="ivcard" role="button" tabindex="0" aria-label="翻回正面">
+        <span class="vpos">${esc(cat)}</span>
+        <div class="ivzh">${esc(zh)}</div>
+        <div class="ivjp" lang="ja">${ruby(jp,true)}</div>
+        <ul class="ivtips">${hints.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>
+        <div class="ivfollow">準備好被追問：<span lang="ja">なぜですか？　具体的には？</span></div>
+        <button class="vspk" id="ivspk" aria-label="念出題目">${ICON_SPK}</button></div>`;
+  $("#view").innerHTML=`<div class="vwrap">
+    <div class="vctl"><select id="ivcat" aria-label="類別" class="ivsel"><option value="">全部題目</option>${IV_CATS.map(c=>`<option${c===IVS.cat?" selected":""}>${c}</option>`).join("")}</select>
+      <span class="sp"></span><button class="tgl" id="kana" aria-pressed="${kana}">假名<i></i></button></div>
+    <div class="vprog">${esc(cat)}・${IVS.i+1} / ${IVS.list.length}</div>
+    ${card}
+    <div class="vnav"><button class="btn" id="ivprev">上一題</button><button class="btn" id="ivshuf">${ICON_SHUF}洗牌</button><button class="btn main" id="ivnext">下一題</button></div>
+  </div>`;
+  $("#ivcat").onchange=e=>{IVS.cat=e.target.value;ivBuild(false);renderInterview()};
+  $("#kana").onclick=()=>{const on=store.get("kana",true)===false;store.set("kana",on);document.body.classList.toggle("nokana",!on);$("#kana").setAttribute("aria-pressed",on)};
+  const mv=d=>{IVS.i=(IVS.i+d+IVS.list.length)%IVS.list.length;IVS.open=false;IVS.back=false;renderInterview()};
+  $("#ivprev").onclick=()=>mv(-1);$("#ivnext").onclick=()=>mv(1);
+  $("#ivshuf").onclick=()=>{ivBuild(true);renderInterview()};
+  const flip=()=>{IVS.back=!IVS.back;renderInterview()};
+  $("#ivcard").onclick=flip;
+  $("#ivcard").onkeydown=e=>{if((e.key==="Enter"||e.key===" ")&&e.target.id==="ivcard"){e.preventDefault();flip()}};
+  $("#ivspk").onclick=e=>{e.stopPropagation();speak(plainJP(jp))};
+  const rv=$("#ivrev");if(rv)rv.onclick=e=>{e.stopPropagation();IVS.open=!IVS.open;renderInterview()};
+}
+const IV_SAVE=[
+ ["すみません、もう一度{いちど}お願{ねが}いできますか。","不好意思，可以再說一次嗎？"],
+ ["すみません、もう少{すこ}しゆっくりお願{ねが}いできますか。","不好意思，可以說慢一點嗎？"],
+ ["〇〇ということでしょうか。","您的意思是〇〇嗎？（確認聽到的內容）"],
+];
+function renderPhrases(){
+  $("#view").innerHTML=`<div class="vwrap"><p class="ivlead">聽不懂題目時，不要硬猜，用這幾句確認</p>${IV_SAVE.map(([j,z],k)=>`<div class="box vex ivph"><div class="jp" lang="ja">${ruby(j,true)}</div><small>${esc(z)}</small><button class="exspk" data-k="${k}" aria-label="念出這句">${ICON_SPK}</button></div>`).join("")}</div>`;
+  $$("#view .exspk").forEach(b=>b.onclick=()=>speak(plainJP(IV_SAVE[+b.dataset.k][0])));
+}
+function renderNotes(){
+  $("#view").innerHTML=`<div class="vwrap"><div class="box ivnote"><h3>回答原則</h3><ul>
+    <li>${esc(IV_FIRST)}</li><li>${esc(IV_LIFE)}</li><li>最後的「何か質問はありますか」先準備 1～2 個問題，不要回答「特にありません」</li></ul></div>
+    <div class="box ivnote"><h3>讀書計畫重點（回答要對得上）</h3><ul>
+    <li>想修的課：日本法入門（北大法學部為外國人開設）、已在臺大修過的民法IV（親族・相續）、刑法I・II、勞動法；臺大沒有或較少開的比較法I・II、羅馬法</li>
+    <li>勞動法：臺灣勞動部和法院的見解常不一致；想了解日本勞動法在實務上有沒有對女性造成直接或間接歧視</li>
+    <li>比較法：想學法學研究方法，臺大這類課程較少</li>
+    <li>羅馬法：歐陸法系的源頭，也是臺灣繼受的德國法承襲的體系之一；臺大的法律史只教臺灣法律史，羅馬法也比較難自己讀文獻學</li>
+    <li>徐行老師的演習課、ゼミ旁聽：第二學期（春季學期）再參加；第一學期先適應生活、上「一般日本語コース」，加強聽力和口說，並累積日文文獻的閱讀能力</li>
+    <li>出國前的準備：繼續加強日文、讀日文法學文獻，希望修系上的「日文法學名著選讀」</li></ul></div></div>`;
+}
 /* ===== 啟動 ===== */
 (async()=>{
   applyTheme(store.get("theme","blue"));
