@@ -293,7 +293,7 @@ h1.lt{font-size:24px;font-weight:700;text-align:center;margin:0 0 12px}
 
 <script>
 /* ===== 設定 ===== */
-const VERSION = "v3.0.4";
+const VERSION = "v3.0.5";
 // Apps Script 網頁應用程式的網址（/exec 結尾）
 const API = "https://script.google.com/macros/s/AKfycbwESuZ5Hv3EYKhub4Rmzfzn2Yyhv4lfEOa8trqYYDUDz1MV4ah3ET6n-WFMrmVw5N59nQ/exec";
 
@@ -389,8 +389,9 @@ let TOKEN=store.get("token",null);
 const jwtExp=t=>{try{return JSON.parse(atob(t.split(".")[1].replace(/-/g,"+").replace(/_/g,"/"))).exp*1000}catch(e){return 0}};
 const tokenOk=()=>TOKEN&&jwtExp(TOKEN)>Date.now()+60000;
 
+function errText(e){return e&&e.name==="AbortError"?"等太久沒回應":e instanceof SyntaxError?"伺服器回傳格式不對":(e&&e.message)||"連不到伺服器"}
 async function api(body){
-  const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),15000);
+  const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),30000);
   try{const r=await fetch(API,{method:"POST",body:JSON.stringify(body),signal:ctl.signal});return await r.json()}
   finally{clearTimeout(tm)}
 }
@@ -446,6 +447,7 @@ function handleMe(j){
     if(!j.user.displayName){openProfile(true);return}
     enterApp();return}
   if(j.reason==="not_registered"){store.del("me");show("scrNotReg");$("#nrEmail").textContent=j.email||"";return}
+  if(j.error){const m="伺服器錯誤："+j.error;if(!$("#scrProfile").classList.contains("hide")){$("#pfMsg").textContent=m;$("#pfSave").disabled=false;return}show("scrLogin");$("#loginMsg").textContent=m;return}
   // token 過期或無效 → 重新登入
   TOKEN=null;store.del("token");renderLogin();
 }
@@ -475,7 +477,7 @@ $("#pfSave").onclick=async()=>{
   if(!tokenOk()){$("#pfMsg").textContent="登入過期了，請重新登入";setTimeout(logout,1200);return}
   $("#pfSave").disabled=true;$("#pfMsg").textContent="儲存中…";
   try{const j=await api({action:"profile",token:TOKEN,displayName:name,avatar:pfAva});handleMe(j)}
-  catch(e){$("#pfMsg").textContent="儲存失敗，請再試一次"}
+  catch(e){$("#pfMsg").textContent="儲存失敗（"+errText(e)+"），請再試一次"}
   finally{$("#pfSave").disabled=false}
 };
 $("#meBtn").onclick=()=>{closeDrawer();openProfile(false)};
